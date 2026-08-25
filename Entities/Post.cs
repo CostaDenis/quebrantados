@@ -4,6 +4,8 @@ namespace quebrantados.Entities;
 
 public class Post(Title title, Slug slug, Summary? summary, Body body, DateTime LastUpdateDate, Category category) : Entity
 {
+    private readonly List<Tag> _tags = [];
+
     public Title Title { get; private set; } = title;
     public Slug Slug { get; private set; } = slug;
     public Summary? Summary { get; private set; } = summary;
@@ -11,4 +13,5 @@ public class Post(Title title, Slug slug, Summary? summary, Body body, DateTime 
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime LastUpdateDate { get; private set; } = LastUpdateDate;
     public Category Category { get; private set; } = category;
+    public IReadOnlyCollection<Tag> Tags { get { return _tags.ToArray(); } }
 }
