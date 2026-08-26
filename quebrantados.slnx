@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Quebrantados.Tests/Quebrantados.Tests.csproj" />
+  <Project Path="Quebrantados.Web/Quebrantados.Web.csproj" />
+</Solution>
