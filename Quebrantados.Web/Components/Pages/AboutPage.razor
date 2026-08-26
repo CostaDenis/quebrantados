@@ -1,0 +1,143 @@
+@page "/sobre"
+@layout LandingLayout
+
+<PageTitle>Sobre — Quebrantados</PageTitle>
+
+<div class="min-h-screen bg-background text-main-text antialiased">
+
+    <MainMenu />
+
+    <main>
+        <section class="relative isolate overflow-hidden border-b border-border/70">
+            <div
+                class="absolute inset-0 -z-10 opacity-60 [background-image:radial-gradient(circle_at_25%_20%,#D4B36A26,transparent_30%),radial-gradient(circle_at_85%_80%,#74533D14,transparent_28%)]">
+            </div>
+
+            <div class="mx-auto max-w-5xl px-5 py-20 text-center lg:px-8 lg:py-28">
+                <div
+                    class="mx-auto mb-7 grid size-16 place-items-center rounded-full border border-primary-golden/30 bg-background-alternative">
+                    <img src="/imgs/idea.svg" alt="" class="size-10" />
+                </div>
+                <p class="mb-4 text-xs font-bold uppercase tracking-[0.26em] text-primary-golden">Sobre o projeto</p>
+                <h1 class="font-serif text-5xl leading-tight font-semibold text-primary-brown sm:text-6xl">
+                    Um lugar de encontro entre<br class="hidden sm:block" /> a Palavra e a vida.
+                </h1>
+                <p class="mx-auto mt-7 max-w-3xl text-lg leading-8 text-muted-text">
+                    O Quebrantados nasceu do desejo de compartilhar reflexões bíblicas profundas, honestas e acessíveis
+                    — sem perder a reverência pelas Escrituras nem a proximidade com a vida cotidiana.
+                </p>
+            </div>
+        </section>
+
+        <section class="mx-auto grid max-w-7xl items-center gap-14 px-5 py-20 lg:grid-cols-2 lg:px-8 lg:py-24">
+            <div>
+                <p class="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Por que
+                    “Quebrantados”?</p>
+                    <h2 class="font-serif text-4xl leading-tight font-semibold text-primary-brown">Porque Deus não despreza
+                        um coração sincero.</h2>
+                        <div class="mt-7 space-y-5 text-lg leading-8 text-muted-text">
+                            <p>
+                                Quebrantamento não é fraqueza. É reconhecer nossa necessidade de Deus, abandonar a aparência de
+                                autossuficiência e permitir que a verdade transforme o coração.
+                            </p>
+                            <p>
+                                Esse nome expressa a postura com que desejamos nos aproximar da Bíblia: com humildade para
+                                aprender, coragem para sermos confrontados e esperança para recomeçar.
+                            </p>
+                        </div>
+                    </div>
+
+                    <blockquote
+                        class="relative rounded-[2rem] border border-border bg-surface p-9 shadow-xl shadow-primary-brown/8 sm:p-12">
+                        <span
+                        class="absolute -top-5 left-9 grid size-11 place-items-center rounded-full bg-primary-golden font-serif text-2xl text-surface">“</span>
+                        <p class="font-serif text-3xl leading-relaxed text-primary-brown">
+                            Sacrifícios agradáveis a Deus são o espírito quebrantado; coração compungido e contrito, não o
+                            desprezarás, ó Deus.
+                        </p>
+                        <footer
+                            class="mt-7 flex items-center gap-4 text-sm font-bold uppercase tracking-[0.18em] text-primary-golden">
+                            <span class="h-px w-9 bg-primary-golden"></span>
+                            Salmos 51:17
+                        </footer>
+                    </blockquote>
+                </section>
+
+                <section class="border-y border-border bg-background-alternative">
+                    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
+                        <div class="mx-auto max-w-3xl text-center">
+                            <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Nossos pilares</p>
+                            <h2 class="font-serif text-4xl font-semibold text-primary-brown">O que orienta cada reflexão</h2>
+                            <p class="mt-5 text-lg leading-8 text-muted-text">Três compromissos simples ajudam a manter o
+                                conteúdo fiel ao propósito do projeto.</p>
+                            </div>
+
+                            <div class="mt-12 grid gap-6 md:grid-cols-3">
+                                @foreach (var pillar in Pillars)
+                                {
+                                    <article class="rounded-3xl border border-border bg-surface p-7">
+                                        <span
+                                        class="mb-6 grid size-11 place-items-center rounded-full bg-primary-brown font-serif text-lg font-semibold text-secondary-golden">@pillar.Number</span>
+                                        <h3 class="font-serif text-2xl font-semibold text-primary-brown">@pillar.Title</h3>
+                                        <p class="mt-4 leading-7 text-muted-text">@pillar.Description</p>
+                                    </article>
+                                }
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-24">
+                        <div>
+                            <p class="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Para quem escrevemos
+                            </p>
+                            <h2 class="font-serif text-4xl leading-tight font-semibold text-primary-brown">Para quem deseja ir além
+                                de uma leitura apressada.</h2>
+                            </div>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                @foreach (var audience in Audiences)
+                                {
+                                    <div class="flex gap-4 rounded-2xl border border-border bg-surface p-5">
+                                        <span class="mt-1 text-primary-golden" aria-hidden="true">✦</span>
+                                        <p class="leading-7 text-muted-text">@audience</p>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+
+                        <section class="bg-primary-brown text-surface">
+                            <div class="mx-auto max-w-4xl px-5 py-20 text-center lg:py-24">
+                                <p class="text-xs font-bold uppercase tracking-[0.26em] text-secondary-golden">Continue a caminhada</p>
+                                <h2 class="mt-4 font-serif text-4xl leading-tight font-semibold sm:text-5xl">Que a próxima leitura
+                                    encontre espaço no seu coração.</h2>
+                                    <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-background-alternative/75">
+                                        Explore os textos mais recentes e encontre uma reflexão para acompanhar seu momento com Deus.
+                                    </p>
+                                    <a href="/reflexoes"
+                                       class="mt-9 inline-flex rounded-full bg-secondary-golden px-7 py-3.5 font-semibold text-primary-brown transition hover:-translate-y-0.5 hover:bg-surface">
+                                        Explorar reflexões
+                                    </a>
+                                </div>
+                            </section>
+                        </main>
+
+                        <Footer />
+                    </div>
+
+@code {
+    private static readonly Pillar[] Pillars =
+    [
+        new("01", "Fidelidade", "A Bíblia é o ponto de partida e a referência central de cada conteúdo publicado."),
+        new("02", "Profundidade", "Buscamos compreender o texto com atenção, contexto e disposição para aprender."),
+        new("03", "Aplicação", "A reflexão encontra seu propósito quando alcança escolhas, relacionamentos e o cotidiano.")
+    ];
+
+    private static readonly string[] Audiences =
+    [
+        "Quem está começando a conhecer as Escrituras e procura uma linguagem acolhedora.",
+        "Quem já caminha na fé, mas deseja aprofundar sua compreensão da Palavra.",
+        "Quem atravessa dúvidas, esperas ou recomeços e busca direção bíblica.",
+        "Quem deseja transformar leitura em prática e conhecimento em relacionamento com Deus."
+    ];
+
+    private sealed record Pillar(string Number, string Title, string Description);
+}

@@ -1,0 +1,29 @@
+Background geral    #FAF7EF
+Cards                #FFFCF6
+Títulos              #50382A
+Texto                #29231F
+Texto secundário     #6B625B
+Botões principais    #50382A
+Detalhes e ícones    #B58A3A
+Bordas               #DDD0B8
+
+
+
+
+
+
+
+
+
+
+/                              Landing page
+/reflexoes                     Todos os posts
+/reflexoes/{slug}              Leitura do post
+/categorias                    Todas as categorias
+/categorias/{slug}             Posts de uma categoria
+/sobre                         Sobre o projeto
+/account/login                 Login do administrador
+/admin                         Dashboard
+/admin/posts                   Gerenciamento de posts
+/admin/categories              Gerenciamento de categorias
+/admin/tags                    Gerenciamento de tags

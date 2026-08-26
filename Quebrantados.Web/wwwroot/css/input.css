@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+    /* Background principal - Marfim de página*/
+    --color-background: #FAF7EF;
+    /* Background alternativo - Pergaminho suave*/
+    --color-background-alternative: #F2E9D8;
+    /* Marrom principal - Couro escuro*/
+    --color-primary-brown: #50382A;
+    /* Marrom secundário - Madeira*/
+    --color-secondary-brown: #74533D;
+    /* Dourado principal - Ouro envelhecido*/
+    --color-primary-golden: #B58A3A;
+    /* Dourado suave - Ouro claro*/
+    --color-secondary-golden: #D4B36A;
+    /* Texto principal - Marrom quase preto*/
+    --color-main-text: #29231F;
+    /* Texto secundário - Marrom acinzentado*/
+    --color-muted-text: #6B625B;
+    /* Bordars - Bege envelhecido*/
+    --color-border: #DDD0B8;
+    /* Superfícies elevadas */
+    --color-surface: #FFFCF6;
+}
