@@ -1,0 +1,151 @@
+@page "/categorias"
+@layout LandingLayout
+
+<PageTitle>Categorias — Quebrantados</PageTitle>
+
+<div class="min-h-screen bg-background text-main-text antialiased">
+    <MainMenu />
+
+    <main>
+        <section class="relative isolate overflow-hidden border-b border-border/70">
+            <div
+                class="absolute inset-0 -z-10 opacity-60 bg-[radial-gradient(circle_at_18%_20%,#D4B36A24,transparent_28%),radial-gradient(circle_at_86%_65%,#74533D14,transparent_30%)]">
+            </div>
+            <div class="mx-auto max-w-5xl px-5 py-20 text-center lg:px-8 lg:py-28">
+                <div
+                    class="mx-auto mb-7 grid size-16 place-items-center rounded-full border border-primary-golden/30 bg-background-alternative">
+                    <img src="/imgs/icon.svg" alt="" class="size-10" />
+                </div>
+                <p class="mb-4 text-xs font-bold uppercase tracking-[0.26em] text-primary-golden">Caminhos de estudo</p>
+                <h1 class="font-serif text-5xl leading-tight font-semibold text-primary-brown sm:text-6xl">Explore a
+                    Palavra por temas.</h1>
+                    <p class="mx-auto mt-7 max-w-3xl text-lg leading-8 text-muted-text">
+                        Encontre reflexões reunidas em grandes áreas da fé cristã e escolha um caminho para aprofundar sua
+                        leitura das Escrituras.
+                    </p>
+                </div>
+            </section>
+
+            <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
+                <div class="mb-11 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+                    <div>
+                        <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">
+                            Todas as categorias
+                        </p>
+                        <h2 class="font-serif text-4xl font-semibold text-primary-brown">
+                            Por onde você deseja começar?
+                        </h2>
+                        <p class="max-w-md mt-4 text-muted-text">
+                            Cada reflexão pertence a uma categoria principal e se conecta a assuntos mais específicos por
+                            meio das tags.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach (var category in Categories)
+                    {
+                        <a href="@($"/categorias/{category.Slug}")"
+                           class="group flex min-h-80 flex-col rounded-3xl border border-border bg-surface p-7 no-underline transition hover:-translate-y-1 hover:border-primary-golden/60 hover:shadow-xl hover:shadow-primary-brown/8">
+                            <div class="mb-8 flex items-start justify-between gap-4">
+                                <span
+                                class="grid size-12 place-items-center rounded-2xl bg-background-alternative font-serif text-xl font-semibold text-primary-golden">@category.Number</span>
+                                <span
+                                    class="rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-text">@category.PostCount
+                                    reflexões</span>
+                                </div>
+                                <h3
+                                    class="font-serif text-2xl font-semibold text-primary-brown transition group-hover:text-secondary-brown">
+                                    @category.Name</h3>
+                                    <p class="mt-4 flex-1 leading-7 text-muted-text">@category.Description</p>
+                                    <div class="mt-7 flex flex-wrap gap-2">
+                                        @foreach (var topic in category.Topics)
+                                        {
+                                            <span
+                                            class="rounded-full bg-background-alternative px-3 py-1 text-xs text-secondary-brown">@topic</span>
+                                        }
+                                    </div>
+                                    <span class="mt-7 inline-flex items-center gap-2 font-semibold text-primary-golden">
+                                        Explorar categoria <span class="transition group-hover:translate-x-1"
+                                                                 aria-hidden="true">→</span>
+                                    </span>
+                                </a>
+                            }
+                        </div>
+                    </section>
+
+                    <section class="border-y border-border bg-background-alternative">
+                        <div
+                            class="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[0.85fr_1.15fr] lg:px-8 lg:py-24">
+                            <div>
+                                <p class="mb-4 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Categorias e tags
+                                </p>
+                                <h2 class="font-serif text-4xl leading-tight font-semibold text-primary-brown">Do caminho amplo ao
+                                    assunto específico.</h2>
+                                    <p class="mt-5 max-w-lg text-lg leading-8 text-muted-text">
+                                        As categorias organizam as grandes áreas do blog. As tags ajudam você a encontrar assuntos
+                                        particulares dentro delas.
+                                    </p>
+                                </div>
+
+                                <div class="rounded-4xl border border-border bg-surface p-7 sm:p-9">
+                                    <div class="grid gap-6 sm:grid-cols-2">
+                                        <div>
+                                            <span
+                                            class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Categoria</span>
+                                            <p class="mt-3 font-serif text-2xl font-semibold text-primary-brown">Antigo Testamento</p>
+                                            <p class="mt-2 leading-7 text-muted-text">Uma grande trilha editorial que reúne diversos
+                                                livros, personagens e períodos.</p>
+                                            </div>
+                                            <div class="border-t border-border pt-6 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6">
+                                                <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Tags
+                                                    relacionadas</span>
+                                                    <div class="mt-4 flex flex-wrap gap-2">
+                                                        @foreach (var tag in ExampleTags)
+                                                        {
+                                                            <span
+                                                            class="rounded-full border border-border bg-background px-3 py-1.5 text-sm text-secondary-brown">#@tag</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="bg-primary-brown text-surface">
+                                    <div class="mx-auto max-w-4xl px-5 py-20 text-center lg:py-24">
+                                        <p class="text-xs font-bold uppercase tracking-[0.26em] text-secondary-golden">Leitura mais recente</p>
+                                        <h2 class="mt-4 font-serif text-4xl leading-tight font-semibold sm:text-5xl">Prefere descobrir sem
+                                            escolher um tema?</h2>
+                                            <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-background-alternative/75">
+                                                Veja todas as reflexões em ordem de publicação e encontre o texto certo para este momento.
+                                            </p>
+                                            <a href="/reflexoes"
+                                               class="mt-9 inline-flex rounded-full bg-secondary-golden px-7 py-3.5 font-semibold text-primary-brown transition hover:-translate-y-0.5 hover:bg-surface">
+                                                Ver todas as reflexões
+                                            </a>
+                                        </div>
+                                    </section>
+                                </main>
+
+                                <Footer />
+                            </div>
+
+@code {
+    private static readonly CategoryPreview[] Categories =
+    [
+        new("01", "Estudos bíblicos", "estudos-biblicos", "Leituras cuidadosas de textos, temas e contextos para compreender melhor as Escrituras.", 12, ["Contexto", "Interpretação", "Doutrina"]),
+        new("02", "Vida cristã", "vida-crista", "Reflexões sobre fé prática, relacionamentos, decisões e uma vida moldada pelo Evangelho.", 9, ["Fé", "Oração", "Cotidiano"]),
+        new("03", "Antigo Testamento", "antigo-testamento", "Histórias, poesias e profecias que revelam o caráter de Deus e sua obra na história.", 8, ["Salmos", "Profetas", "Sabedoria"]),
+        new("04", "Novo Testamento", "novo-testamento", "Os Evangelhos, as cartas e o testemunho da Igreja sobre Jesus Cristo e seu Reino.", 11, ["Jesus", "Igreja", "Evangelho"]),
+        new("05", "Devocionais", "devocionais", "Textos breves para acompanhar momentos de oração, silêncio e meditação pessoal.", 15, ["Meditação", "Esperança", "Consolo"]),
+        new("06", "Teologia", "teologia", "Conceitos essenciais da fé cristã explicados com clareza, reverência e aplicação.",
+7, ["Graça", "Salvação", "Reino de Deus"])
+    ];
+
+    private static readonly string[] ExampleTags = ["jó", "salmos", "sabedoria", "sofrimento", "aliança"];
+
+    private sealed record CategoryPreview(string Number, string Name, string Slug, string Description, int PostCount,
+string[] Topics);
+}

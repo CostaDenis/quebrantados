@@ -1,0 +1,189 @@
+@page "/reflexoes"
+@layout LandingLayout
+
+<PageTitle>Reflexões — Quebrantados</PageTitle>
+
+<div class="min-h-screen bg-background text-main-text antialiased">
+    <MainMenu />
+
+    <main>
+        <section class="relative isolate overflow-hidden border-b border-border/70">
+            <div
+                class="absolute inset-0 -z-10 opacity-60 bg-[radial-gradient(circle_at_18%_15%,#D4B36A24,transparent_28%),radial-gradient(circle_at_84%_75%,#74533D14,transparent_30%)]">
+            </div>
+            <div class="mx-auto max-w-5xl px-5 py-20 text-center lg:px-8 lg:py-28">
+                <p class="mb-4 text-xs font-bold uppercase tracking-[0.26em] text-primary-golden">Leitura e meditação
+                </p>
+                <h1 class="font-serif text-5xl leading-tight font-semibold text-primary-brown sm:text-6xl">Reflexões à
+                    luz da Palavra.</h1>
+                    <p class="mx-auto mt-7 max-w-3xl text-lg leading-8 text-muted-text">
+                        Estudos, devocionais e conversas sinceras para compreender as Escrituras e viver o Evangelho no
+                        cotidiano.
+                    </p>
+                </div>
+            </section>
+
+            <section class="mx-auto max-w-7xl px-5 pt-16 lg:px-8 lg:pt-20">
+                <article
+                    class="group grid overflow-hidden rounded-4xl border border-border bg-primary-brown shadow-xl shadow-primary-brown/10 lg:grid-cols-[0.9fr_1.1fr]">
+                    <div class="relative min-h-80 overflow-hidden bg-background-alternative p-8 sm:p-10 lg:min-h-full">
+                        <div
+                            class="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_25%_25%,#D4B36A55,transparent_30%),radial-gradient(circle_at_75%_75%,#50382A30,transparent_35%)]">
+                        </div>
+                        <div
+                            class="relative flex h-full min-h-64 flex-col justify-between rounded-3xl border border-primary-golden/25 bg-surface/80 p-7 backdrop-blur-sm">
+                            <div class="flex items-center justify-between gap-4">
+                                <span
+                                class="rounded-full bg-background-alternative px-3 py-1 text-xs font-bold uppercase tracking-wider text-secondary-brown">@FeaturedPost.Category</span>
+                                <img src="/imgs/icon.svg" alt="" class="size-9 opacity-80" />
+                            </div>
+                        <blockquote class="flex flex-1 items-center justify-center px-4 text-center font-serif text-2xl leading-relaxed text-primary-brown">
+                            “A espera também pode ser um lugar onde a fé cria raízes.”
+                        </blockquote>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center p-8 text-surface sm:p-10 lg:p-14">
+                        <div class="mb-6 flex flex-wrap items-center gap-3 text-sm text-background-alternative/70">
+                            <span>Destaque da semana</span>
+                            <span aria-hidden="true">·</span>
+                            <time datetime="2026-08-24">24 ago. 2026</time>
+                            <span aria-hidden="true">·</span>
+                            <span>@FeaturedPost.ReadTime de leitura</span>
+                        </div>
+                        <h2 class="font-serif text-4xl leading-tight font-semibold sm:text-5xl">@FeaturedPost.Title</h2>
+                        <p class="mt-6 text-lg leading-8 text-background-alternative/75">@FeaturedPost.Summary</p>
+                        <a href="@($"/reflexoes/{FeaturedPost.Slug}")"
+                           class="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-secondary-golden px-6 py-3 font-semibold text-primary-brown transition hover:-translate-y-0.5 hover:bg-surface">
+                            Ler reflexão <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </article>
+            </section>
+
+            <section class="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
+                <div class="flex flex-col gap-6 border-b border-border pb-8 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Arquivo de
+                            reflexões</p>
+                            <h2 class="font-serif text-4xl font-semibold text-primary-brown">Publicações recentes</h2>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2" aria-label="Filtrar por categoria">
+                            @foreach (var filter in Filters)
+                            {
+                                <a href="@filter.Url"
+                                   class="rounded-full border px-4 py-2 text-sm font-medium transition @(filter.IsActive ? "border-primary-brown bg-primary-brown text-surface" : "border-border bg-surface text-secondary-brown hover:border-primary-golden")">
+                                    @filter.Label
+                                </a>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mt-10 grid gap-x-7 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+                        @foreach (var post in Posts)
+                        {
+                            <article class="group flex flex-col border-b border-border pb-9">
+                                <div class="mb-6 flex items-center justify-between gap-4">
+                                    <a href="@($"/categorias/{post.CategorySlug}")"
+                                       class="text-xs font-bold uppercase tracking-[0.16em] text-primary-golden">@post.Category</a>
+                                    <span class="text-sm text-muted-text">@post.ReadTime</span>
+                                </div>
+                                <h3
+                                    class="font-serif text-2xl leading-snug font-semibold text-primary-brown transition group-hover:text-secondary-brown">
+                                    <a href="@($"/reflexoes/{post.Slug}")">@post.Title</a>
+                                </h3>
+                                <p class="mt-4 flex-1 leading-7 text-muted-text">@post.Summary</p>
+                                <div class="mt-7 flex items-center justify-between gap-4">
+                                    <time datetime="@post.IsoDate" class="text-sm text-muted-text">@post.Date</time>
+                                    <a href="@($"/reflexoes/{post.Slug}")" aria-label="Ler @post.Title"
+                                       class="grid size-10 place-items-center rounded-full border border-border text-primary-golden transition group-hover:border-primary-golden group-hover:bg-background-alternative">
+                                        <span aria-hidden="true">→</span>
+                                    </a>
+                                </div>
+                            </article>
+                        }
+                    </div>
+
+                    <nav class="mt-14 flex items-center justify-center gap-2" aria-label="Paginação">
+                        <span class="grid size-10 place-items-center rounded-full border border-border text-muted-text/50"
+                              aria-hidden="true">←</span>
+                        <a href="/reflexoes?page=1" aria-current="page"
+                           class="grid size-10 place-items-center rounded-full bg-primary-brown font-semibold text-surface">1</a>
+                        <a href="/reflexoes?page=2"
+                           class="grid size-10 place-items-center rounded-full border border-border bg-surface font-semibold text-secondary-brown transition hover:border-primary-golden">2</a>
+                        <a href="/reflexoes?page=3"
+                           class="grid size-10 place-items-center rounded-full border border-border bg-surface font-semibold text-secondary-brown transition hover:border-primary-golden">3</a>
+                        <a href="/reflexoes?page=2" aria-label="Próxima página"
+                           class="grid size-10 place-items-center rounded-full border border-border bg-surface text-primary-golden transition hover:border-primary-golden">→</a>
+                    </nav>
+                </section>
+
+                <section class="border-y border-border bg-background-alternative">
+                    <div class="mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 lg:grid-cols-[1fr_auto] lg:px-8 lg:py-20">
+                        <div class="max-w-3xl">
+                            <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Não sabe por onde
+                                começar?</p>
+                                <h2 class="font-serif text-3xl leading-tight font-semibold text-primary-brown sm:text-4xl">Escolha
+                                    uma categoria e siga uma trilha de leitura.</h2>
+                                    <p class="mt-4 text-lg leading-8 text-muted-text">Navegue por grandes temas e encontre textos
+                                        relacionados ao momento que você está vivendo.</p>
+                                    </div>
+                                    <a href="/categorias"
+                                       class="inline-flex w-fit rounded-full bg-primary-brown px-7 py-3.5 font-semibold text-surface transition hover:-translate-y-0.5 hover:bg-secondary-brown">
+                                        Explorar categorias
+                                    </a>
+                                </div>
+                            </section>
+                        </main>
+
+                        <Footer />
+                    </div>
+
+@code {
+    private static readonly PostPreview FeaturedPost = new(
+        "Vida cristã",
+        "vida-crista",
+        "Quando Deus parece estar em silêncio",
+        "quando-deus-parece-estar-em-silencio",
+        "Uma reflexão sobre espera, confiança e a presença de Deus nos períodos em que as respostas não chegam.",
+        "8 min",
+        "24 ago. 2026",
+        "2026-08-24");
+
+    private static readonly Filter[] Filters =
+    [
+        new("Todas", "/reflexoes", true),
+        new("Estudos bíblicos", "/reflexoes?categoria=estudos-biblicos", false),
+        new("Vida cristã", "/reflexoes?categoria=vida-crista", false),
+        new("Devocionais", "/reflexoes?categoria=devocionais", false),
+        new("Teologia", "/reflexoes?categoria=teologia", false)
+    ];
+
+    private static readonly PostPreview[] Posts =
+    [
+        new("Estudo bíblico", "estudos-biblicos", "O que significa ter um coração quebrantado?",
+"o-que-significa-ter-um-coracao-quebrantado", "Um olhar para os Salmos e para o convite bíblico a uma vida sincera diante do Senhor.", "7 min", "21 ago. 2026", "2026-08-21"),
+        new("Evangelho", "novo-testamento", "Graça para recomeçar todos os dias", "graca-para-recomecar-todos-os-dias", "Como a graça de Cristo transforma culpa em arrependimento, esperança e um novo caminho.", "5 min", "18 ago. 2026",
+"2026-08-18"),
+        new("Devocionais", "devocionais", "A paz que permanece em meio à tempestade",
+"a-paz-que-permanece-em-meio-a-tempestade", "O descanso prometido por Jesus não depende da ausência de lutas, mas da sua presença conosco.", "6 min", "14 ago. 2026", "2026-08-14"),
+        new("Antigo Testamento", "antigo-testamento", "O que aprendemos com a perseverança de Jó",
+"o-que-aprendemos-com-a-perseveranca-de-jo", "Dor, perguntas e fé se encontram em uma das narrativas mais honestas das Escrituras.", "9 min", "10 ago. 2026", "2026-08-10"),
+        new("Teologia", "teologia", "Misericórdia: quando Deus se aproxima da nossa fragilidade",
+"misericordia-quando-deus-se-aproxima", "Uma compreensão bíblica da misericórdia e de como ela transforma a maneira como tratamos o próximo.", "8 min", "6 ago. 2026", "2026-08-06"),
+        new("Vida cristã", "vida-crista", "Cultivando uma vida de oração sincera", "cultivando-uma-vida-de-oracao-sincera", "A oração como relacionamento: menos aparência, mais presença, escuta e confiança.", "6 min", "2 ago. 2026", "2026-08-02")
+    ];
+
+    private sealed record Filter(string Label, string Url, bool IsActive);
+
+    private sealed record PostPreview(
+        string Category,
+        string CategorySlug,
+        string Title,
+        string Slug,
+        string Summary,
+        string ReadTime,
+        string Date,
+        string IsoDate);
+}
