@@ -1,4 +1,4 @@
-namespace quebrantados.ValueObjects;
+namespace Quebrantados.Web.ValueObjects;
 
 public abstract class ValueObject
 {

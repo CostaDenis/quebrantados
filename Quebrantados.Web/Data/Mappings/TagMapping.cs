@@ -1,24 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using quebrantados.Entities;
-using quebrantados.ValueObjects;
+using Quebrantados.Web.Entities;
+using Quebrantados.Web.ValueObjects;
 
-namespace quebrantados.Data.Mappings;
+namespace Quebrantados.Web.Data.Mappings;
 
 public class TagMapping : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
-        builder.ToTable("tags");
+        builder.ToTable("Tags");
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
-            .HasColumnName("id")
+            .HasColumnName("Id")
             .HasColumnType("uuid");
 
         builder.Property(x => x.Name)
-            .HasColumnName("name")
+            .HasColumnName("Name")
             .HasConversion(
                 name => name.Value,
                 value => new TagName(value))
@@ -30,7 +30,7 @@ public class TagMapping : IEntityTypeConfiguration<Tag>
             .IsUnique();
 
         builder.Property(x => x.Slug)
-            .HasColumnName("slug")
+            .HasColumnName("Slug")
             .HasConversion(
                 slug => slug.Value,
                 value => new Slug(value))
@@ -48,18 +48,18 @@ public class TagMapping : IEntityTypeConfiguration<Tag>
                 right => right
                     .HasOne<Post>()
                     .WithMany()
-                    .HasForeignKey("post_id")
+                    .HasForeignKey("PostId")
                     .OnDelete(DeleteBehavior.Cascade),
                 left => left
                     .HasOne<Tag>()
                     .WithMany()
-                    .HasForeignKey("tag_id")
+                    .HasForeignKey("TagId")
                     .OnDelete(DeleteBehavior.Cascade),
                 join =>
                 {
-                    join.ToTable("posts_tags");
+                    join.ToTable("PostsTags");
 
-                    join.HasKey("post_id", "tag_id");
+                    join.HasKey("PostId", "TagId");
                 }
             );
 

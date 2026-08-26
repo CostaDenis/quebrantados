@@ -1,4 +1,4 @@
-namespace quebrantados.Exceptions.ValueObjects;
+namespace Quebrantados.Web.Exceptions.ValueObjects;
 
 public class InvalidBodyException(string message) : BaseException(message)
 {

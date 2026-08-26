@@ -1,4 +1,4 @@
-namespace quebrantados.Exceptions.ValueObjects;
+namespace Quebrantados.Web.Exceptions.ValueObjects;
 
 public class InvalidCategoryNameException(string message) : BaseException(message)
 {

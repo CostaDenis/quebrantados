@@ -1,17 +1,32 @@
-using quebrantados.ValueObjects;
+using Quebrantados.Web.ValueObjects;
 
-namespace quebrantados.Entities;
+namespace Quebrantados.Web.Entities;
 
-public class Post(Title title, Slug slug, Summary? summary, Body body, DateTime LastUpdateDate, Category category) : Entity
+public class Post : Entity
 {
     private readonly List<Tag> _tags = [];
 
-    public Title Title { get; private set; } = title;
-    public Slug Slug { get; private set; } = slug;
-    public Summary? Summary { get; private set; } = summary;
-    public Body Body { get; private set; } = body;
+    private Post()
+    {
+
+    }
+
+    public Post(Title title, Slug slug, Summary? summary, Body body, DateTime lastUpdateDate, Category category)
+    {
+        Title = title;
+        Slug = slug;
+        Summary = summary;
+        Body = body;
+        LastUpdateDate = lastUpdateDate;
+        Category = category;
+    }
+
+    public Title Title { get; private set; } = null!;
+    public Slug Slug { get; private set; } = null!;
+    public Summary? Summary { get; private set; } = null!;
+    public Body Body { get; private set; } = null!;
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-    public DateTime LastUpdateDate { get; private set; } = LastUpdateDate;
-    public Category Category { get; private set; } = category;
+    public DateTime LastUpdateDate { get; private set; }
+    public Category Category { get; private set; } = null!;
     public IReadOnlyCollection<Tag> Tags { get { return _tags.ToArray(); } }
 }

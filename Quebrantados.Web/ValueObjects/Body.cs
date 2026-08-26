@@ -1,6 +1,6 @@
-using quebrantados.Exceptions.ValueObjects;
+using Quebrantados.Web.Exceptions.ValueObjects;
 
-namespace quebrantados.ValueObjects;
+namespace Quebrantados.Web.ValueObjects;
 
 public class Body : ValueObject
 {

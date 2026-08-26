@@ -1,24 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using quebrantados.Entities;
-using quebrantados.ValueObjects;
+using Quebrantados.Web.Entities;
+using Quebrantados.Web.ValueObjects;
 
-namespace quebrantados.Data.Mappings;
+namespace Quebrantados.Web.Data.Mappings;
 
 public class CategoryMapping : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
-        builder.ToTable("categories");
+        builder.ToTable("Categories");
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
-            .HasColumnName("id")
+            .HasColumnName("Id")
             .HasColumnType("uuid");
 
         builder.Property(x => x.Name)
-            .HasColumnName("name")
+            .HasColumnName("Name")
+            .HasConversion(
+                name => name.Value,
+                value => new CategoryName(value))
             .HasColumnType("varchar")
             .HasMaxLength(60)
             .IsRequired();
@@ -27,7 +30,7 @@ public class CategoryMapping : IEntityTypeConfiguration<Category>
             .IsUnique();
 
         builder.Property(x => x.Slug)
-            .HasColumnName("slug")
+            .HasColumnName("Slug")
             .HasConversion(
                 slug => slug.Value,
                 value => new Slug(value))
@@ -40,7 +43,7 @@ public class CategoryMapping : IEntityTypeConfiguration<Category>
 
         builder.HasMany(category => category.Posts)
             .WithOne(post => post.Category)
-            .HasForeignKey("category_id")
+            .HasForeignKey("Category_id")
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 

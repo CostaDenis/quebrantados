@@ -1,24 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using quebrantados.Entities;
-using quebrantados.ValueObjects;
+using Quebrantados.Web.Entities;
+using Quebrantados.Web.ValueObjects;
 
-namespace quebrantados.Data.Mappings;
+namespace Quebrantados.Web.Data.Mappings;
 
 public class PostMapping : IEntityTypeConfiguration<Post>
 {
     public void Configure(EntityTypeBuilder<Post> builder)
     {
-        builder.ToTable("posts");
+        builder.ToTable("Posts");
 
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
-            .HasColumnName("id")
+            .HasColumnName("Id")
             .HasColumnType("uuid");
 
         builder.Property(x => x.Title)
-            .HasColumnName("title")
+            .HasColumnName("Title")
             .HasConversion(
                 title => title.Value,
                 value => new Title(value))
@@ -27,7 +27,7 @@ public class PostMapping : IEntityTypeConfiguration<Post>
             .IsRequired();
 
         builder.Property(x => x.Slug)
-            .HasColumnName("slug")
+            .HasColumnName("Slug")
             .HasConversion(
                 slug => slug.Value,
                 value => new Slug(value))
@@ -39,7 +39,7 @@ public class PostMapping : IEntityTypeConfiguration<Post>
             .IsUnique();
 
         builder.Property(x => x.Summary)
-            .HasColumnName("summary")
+            .HasColumnName("Summary")
             .HasConversion(
                 summary => summary!.Value,
                 value => new Summary(value))
@@ -48,7 +48,7 @@ public class PostMapping : IEntityTypeConfiguration<Post>
             .IsRequired(false);
 
         builder.Property(x => x.Body)
-            .HasColumnName("body")
+            .HasColumnName("Body")
             .HasConversion(
                 body => body.Value,
                 value => new Body(value))
@@ -56,12 +56,12 @@ public class PostMapping : IEntityTypeConfiguration<Post>
             .IsRequired();
 
         builder.Property(x => x.CreatedAt)
-            .HasColumnName("created_at")
+            .HasColumnName("CreatedAt")
             .HasColumnType("timestampz")
             .IsRequired();
 
         builder.Property(x => x.LastUpdateDate)
-            .HasColumnName("last_update_date")
+            .HasColumnName("LastUpdateDate")
             .HasColumnType("timestampz")
             .IsRequired();
 

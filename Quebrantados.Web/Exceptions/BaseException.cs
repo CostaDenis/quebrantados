@@ -1,4 +1,4 @@
-namespace quebrantados.Exceptions;
+namespace Quebrantados.Web.Exceptions;
 
 public class BaseException(string message) : Exception(message)
 {

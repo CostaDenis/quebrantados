@@ -1,4 +1,4 @@
-namespace quebrantados.Entities;
+namespace Quebrantados.Web.Entities;
 
 public abstract class Entity
 {

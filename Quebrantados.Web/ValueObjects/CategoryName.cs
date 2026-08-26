@@ -1,6 +1,6 @@
-using quebrantados.Exceptions.ValueObjects;
+using Quebrantados.Web.Exceptions.ValueObjects;
 
-namespace quebrantados.ValueObjects;
+namespace Quebrantados.Web.ValueObjects;
 
 public class CategoryName : ValueObject
 {
@@ -8,7 +8,7 @@ public class CategoryName : ValueObject
     public CategoryName(string value)
     {
         var normalized = value.Trim();
-        InvalidTagNameException.ThrowIfInvalid(normalized);
+        InvalidCategoryNameException.ThrowIfInvalid(normalized);
         Value = normalized;
     }
 

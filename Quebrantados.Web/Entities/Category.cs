@@ -1,13 +1,24 @@
-using quebrantados.ValueObjects;
+using Quebrantados.Web.ValueObjects;
 
-namespace quebrantados.Entities;
+namespace Quebrantados.Web.Entities;
 
-public class Category(string name, Slug slug)
-    : Entity
+public class Category : Entity
 {
+
     private readonly List<Post> _posts = [];
 
-    public string Name { get; private set; } = name;
-    public Slug Slug { get; private set; } = slug;
+    private Category()
+    {
+
+    }
+
+    public Category(CategoryName name, Slug slug)
+    {
+        Name = name;
+        Slug = slug;
+    }
+
+    public CategoryName Name { get; private set; } = null!;
+    public Slug Slug { get; private set; } = null!;
     public IReadOnlyCollection<Post> Posts { get { return _posts.ToArray(); } }
 }

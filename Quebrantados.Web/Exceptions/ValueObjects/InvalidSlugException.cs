@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace quebrantados.Exceptions.ValueObjects;
+namespace Quebrantados.Web.Exceptions.ValueObjects;
 
 public class InvalidSlugException(string message) : BaseException(message)
 {
