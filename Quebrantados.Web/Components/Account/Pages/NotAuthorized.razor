@@ -1,7 +1,6 @@
-@page "/nao-encontrado"
 @layout HeadlessLayout
 
-<PageTitle> Quebrantados — Página não encontrada</PageTitle>
+<PageTitle>Acesso não autorizado — Quebrantados</PageTitle>
 
 <main
     class="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-5 py-12 text-main-text antialiased">
@@ -9,13 +8,8 @@
         class="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_15%_15%,#D4B36A2B,transparent_28%),radial-gradient(circle_at_85%_85%,#74533D18,transparent_30%)]">
     </div>
 
-    <div class="absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 select-none font-serif text-[13rem] font-bold leading-none text-primary-brown/[0.035] sm:text-[20rem]"
-         aria-hidden="true">
-        404
-    </div>
-
     <section
-        class="relative w-full max-w-2xl rounded-4xl border border-border bg-surface/90 p-7 text-center shadow-2xl shadow-primary-brown/10 backdrop-blur-sm sm:p-11">
+        class="relative w-full max-w-xl rounded-4xl border border-border bg-surface/90 p-7 text-center shadow-2xl shadow-primary-brown/10 backdrop-blur-sm sm:p-11">
         <a href="/" aria-label="Voltar para o Quebrantados"
            class="mx-auto mb-8 flex w-fit items-center gap-3 no-underline">
             <span
@@ -28,24 +22,27 @@
             </span>
         </a>
 
-        <h1 class="font-serif text-4xl leading-tight font-semibold text-primary-brown sm:text-5xl">Esta página não foi
-            encontrada.</h1>
-            <p class="mx-auto mt-5 max-w-lg text-lg leading-8 text-muted-text">
-                O endereço pode ter mudado, o conteúdo pode ter sido removido ou talvez este caminho ainda não tenha sido
-                escrito.
+        <div
+            class="mx-auto mb-7 grid size-20 place-items-center rounded-full border border-primary-golden/30 bg-background-alternative text-primary-brown">
+            <img src="imgs/padlock.svg" class="size-10" alt="Cadeado">
+        </div>
+
+        <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-golden">Acesso restrito</p>
+        <h1 class="font-serif text-4xl leading-tight font-semibold text-primary-brown sm:text-5xl">Esta página requer
+            autenticação.</h1>
+            <p class="mx-auto mt-5 max-w-md text-lg leading-8 text-muted-text">
+                Entre com sua conta administrativa para continuar e acessar os recursos de gerenciamento do blog.
             </p>
 
             <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-                <a href="/"
+                <a href="/login"
                    class="inline-flex items-center justify-center gap-2 rounded-full bg-primary-brown px-7 py-3.5 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown">
-                    Voltar ao início <span aria-hidden="true">→</span>
+                    Ir para o login <span aria-hidden="true">→</span>
                 </a>
-                <a href="/reflexoes"
+                <a href="/"
                    class="inline-flex items-center justify-center rounded-full border border-border bg-background px-7 py-3.5 font-semibold text-primary-brown transition hover:border-primary-golden">
-                    Explorar reflexões
+                    Voltar ao blog
                 </a>
             </div>
-
-            <p class="mt-8 text-sm text-muted-text">“Lâmpada para os meus pés é tua palavra.” · Salmos 119:105</p>
         </section>
     </main>

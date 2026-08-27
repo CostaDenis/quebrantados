@@ -1,14 +1,16 @@
-﻿@inherits LayoutComponentBase
+@using Quebrantados.Web.Components.Account.Pages
+@inherits LayoutComponentBase
 
-<div class="page">
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+<AuthorizeView>
+    <NotAuthorized>
+        <NotAuthorized />
+    </NotAuthorized>
+    <Authorized>
+        <div class="min-h-screen bg-background text-main-text antialiased lg:grid lg:grid-cols-[17rem_minmax(0,1fr)]">
+            <DashboardMenu />
+            <main class="min-w-0 p-5 sm:p-8 lg:p-10">
+                @Body
+            </main>
         </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
-
+    </Authorized>
+</AuthorizeView>
