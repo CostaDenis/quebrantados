@@ -1,4 +1,3 @@
-@using Quebrantados.Web.Components.Account.Pages
 @inherits LayoutComponentBase
 
 <AuthorizeView>
@@ -6,8 +5,9 @@
         <NotAuthorized />
     </NotAuthorized>
     <Authorized>
-        <div class="min-h-screen bg-background text-main-text antialiased lg:grid lg:grid-cols-[17rem_minmax(0,1fr)]">
-            <DashboardMenu />
+        <div class="min-h-screen bg-background text-main-text antialiased 
+            lg:grid lg:grid-cols-[17rem_minmax(0,1fr)]">
+            <MenuDashboard />
             <main class="min-w-0 p-5 sm:p-8 lg:p-10">
                 @Body
             </main>

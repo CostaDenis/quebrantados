@@ -1,0 +1,180 @@
+@page "/dashboard"
+@layout MainLayout
+
+<PageTitle>
+    Visão geral — Quebrantados
+</PageTitle>
+
+<div class="mx-auto max-w-360">
+
+    <HeaderDashboard PageName="Painel administrativo" PageTitle="Visão geral"
+                     PageDescription="Acompanhe o conteúdo do blog e continue de onde parou.">
+        <LinkDashboard Href="/dashboard/reflexoes/adicionar">
+            <SpanDashboard Value="+" />
+            Nova reflexão
+        </LinkDashboard>
+    </HeaderDashboard>
+
+    <section class="grid gap-4 py-8 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do conteúdo">
+        @foreach (var metric in Metrics)
+        {
+            <article class="rounded-3xl border border-border bg-surface p-5 shadow-sm">
+                <div class="flex items-start justify-between gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-muted-text">@metric.Label</p>
+                        <p class="mt-2 font-serif text-4xl font-semibold text-primary-brown">@metric.Value</p>
+                    </div>
+                    <span
+                    class="grid size-11 place-items-center rounded-2xl bg-background-alternative text-lg font-bold text-primary-golden">@metric.Symbol</span>
+                </div>
+                <p class="mt-4 text-xs leading-5 text-muted-text">@metric.Note</p>
+            </article>
+        }
+    </section>
+
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(19rem,0.7fr)]">
+        <section class="overflow-hidden rounded-3xl border border-border bg-surface">
+            <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-5 sm:px-6">
+                <div>
+                    <h2 class="font-serif text-2xl font-semibold text-primary-brown">Reflexões recentes</h2>
+                    <p class="mt-1 text-sm text-muted-text">Últimos conteúdos alterados no painel.</p>
+                </div>
+                <a href="/dashboard/posts"
+                   class="shrink-0 text-sm font-semibold text-primary-golden hover:text-secondary-brown">Ver todas
+                    →</a>
+                </div>
+
+                <div class="divide-y divide-border">
+                    @foreach (var post in RecentPosts)
+                    {
+                        <article
+                            class="group flex flex-col gap-4 px-5 py-5 transition hover:bg-background/70 sm:flex-row sm:items-center sm:px-6">
+                            <div class="min-w-0 flex-1">
+                                <div class="mb-2 flex flex-wrap items-center gap-2">
+                                    <span
+                                    class="rounded-full px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-wider @GetStatusClasses(post.Status)">@post.Status</span>
+                                    <span class="text-xs text-muted-text">@post.Category</span>
+                                </div>
+                                <h3
+                                    class="truncate font-serif text-xl font-semibold text-primary-brown group-hover:text-secondary-brown">
+                                    @post.Title</h3>
+                                    <p class="mt-1 text-sm text-muted-text">Atualizado @post.LastUpdate</p>
+                                </div>
+                                <div class="flex shrink-0 items-center gap-2">
+                                    <a href="@($"/reflexoes/{post.Slug}")"
+                                       class="rounded-xl border border-border px-3 py-2 text-xs font-semibold text-muted-text transition hover:border-primary-golden hover:text-primary-brown">Visualizar</a>
+                                    <a href="@($"/dashboard/posts/{post.Slug}/editar")"
+                                       class="rounded-xl bg-background-alternative px-3 py-2 text-xs font-semibold text-secondary-brown transition hover:bg-border">Editar</a>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                </section>
+
+                <div class="grid content-start gap-6">
+                    <section class="rounded-3xl border border-border bg-surface p-6">
+                        <div class="flex items-center justify-between gap-4">
+                            <h2 class="font-serif text-2xl font-semibold text-primary-brown">Ações rápidas</h2>
+                            <span class="text-primary-golden" aria-hidden="true">✦</span>
+                        </div>
+                        <div class="mt-5 grid gap-3">
+                            @foreach (var action in QuickActions)
+                            {
+                                <a href="@action.Url"
+                                   class="group flex items-center justify-between rounded-2xl border border-border bg-background px-4 py-3.5 transition hover:border-primary-golden/60">
+                                    <span>
+                                        <strong class="block text-sm font-semibold text-primary-brown">@action.Label</strong>
+                                        <small class="mt-0.5 block text-xs text-muted-text">@action.Description</small>
+                                    </span>
+                                    <span class="text-primary-golden transition group-hover:translate-x-1"
+                                          aria-hidden="true">→</span>
+                                </a>
+                            }
+                        </div>
+                    </section>
+
+                    <section class="rounded-3xl border border-border bg-primary-brown p-6 text-surface">
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-secondary-golden">Organização</p>
+                        <h2 class="mt-2 font-serif text-2xl font-semibold">Conteúdo por categoria</h2>
+                        <div class="mt-6 space-y-4">
+                            @foreach (var category in CategorySummary)
+                            {
+                                <div>
+                                    <div class="mb-2 flex items-center justify-between gap-4 text-sm">
+                                        <span class="text-background-alternative/80">@category.Name</span>
+                                        <strong class="text-secondary-golden">@category.Count</strong>
+                                    </div>
+                                    <div class="h-1.5 overflow-hidden rounded-full bg-surface/10">
+                                        <div class="h-full rounded-full bg-secondary-golden" style="width: @category.Percentage%">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <a href="/dashboard/categorias"
+                           class="mt-6 inline-flex text-sm font-semibold text-secondary-golden hover:text-surface">Gerenciar
+                            categorias →</a>
+                        </section>
+                    </div>
+                </div>
+
+                <section
+                    class="mt-6 rounded-3xl border border-primary-golden/25 bg-background-alternative p-6 sm:flex sm:items-center sm:justify-between sm:gap-8">
+                    <div class="flex gap-4">
+                        <span class="grid size-11 shrink-0 place-items-center rounded-full bg-primary-golden/15 text-primary-golden"
+                              aria-hidden="true">!</span>
+                        <div>
+                            <h2 class="font-serif text-xl font-semibold text-primary-brown">Há 2 rascunhos esperando por você.</h2>
+                            <p class="mt-1 text-sm leading-6 text-muted-text">Revise o conteúdo, complete os dados pendentes e
+                                publique quando estiver pronto.</p>
+                            </div>
+                        </div>
+                        <a href="/dashboard/posts?status=rascunho"
+                           class="mt-5 inline-flex shrink-0 rounded-full border border-primary-golden/50 px-5 py-2.5 text-sm font-semibold text-primary-brown transition hover:bg-surface sm:mt-0">Revisar
+                            rascunhos</a>
+                        </section>
+                    </div>
+
+@code {
+    private static readonly Metric[] Metrics =
+    [
+        new("Reflexões", "18", "§", "16 publicadas e 2 em rascunho"),
+        new("Categorias", "6", "◫", "Todas possuem conteúdo"),
+        new("Tags", "24", "#", "5 ainda não foram utilizadas"),
+        new("Atualizações", "4", "↻", "Alterações nos últimos 7 dias")
+    ];
+
+    private static readonly RecentPost[] RecentPosts =
+    [
+        new("Quando Deus parece estar em silêncio", "quando-deus-parece-estar-em-silencio", "Vida cristã", "Publicado", "ontem, às 19:42"),
+        new("O que significa ter um coração quebrantado?", "o-que-significa-ter-um-coracao-quebrantado", "Estudos bíblicos",
+"Rascunho", "hoje, às 09:15"),
+        new("Graça para recomeçar todos os dias", "graca-para-recomecar-todos-os-dias", "Evangelho", "Publicado", "há 3 dias"),
+        new("A paz que permanece em meio à tempestade", "a-paz-que-permanece-em-meio-a-tempestade", "Devocionais", "Rascunho",
+"há 5 dias")
+    ];
+
+    private static readonly QuickAction[] QuickActions =
+    [
+        new("Escrever reflexão", "Criar um novo conteúdo", "/dashboard/posts/novo"),
+        new("Nova categoria", "Organizar um novo tema", "/dashboard/categorias/nova"),
+        new("Gerenciar tags", "Revisar assuntos específicos", "/dashboard/tags")
+    ];
+
+    private static readonly CategoryItem[] CategorySummary =
+    [
+        new("Vida cristã", 6, 100),
+        new("Estudos bíblicos", 5, 83),
+        new("Devocionais", 4, 67),
+        new("Teologia", 3, 50)
+    ];
+
+    private static string GetStatusClasses(string status) => status == "Publicado"
+        ? "bg-green-50 text-green-700"
+        : "bg-amber-50 text-amber-700";
+
+    private sealed record Metric(string Label, string Value, string Symbol, string Note);
+    private sealed record RecentPost(string Title, string Slug, string Category, string Status, string LastUpdate);
+    private sealed record QuickAction(string Label, string Description, string Url);
+    private sealed record CategoryItem(string Name, int Count, int Percentage);
+}

@@ -1,0 +1,12 @@
+<a href=@Href
+   class="inline-flex w-fit items-center justify-center gap-2 rounded-2xl bg-primary-brown px-5 py-3 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown">
+    @ChildContent
+</a>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Href { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,101 @@
+@page "/dashboard/categorias/editar"
+@layout MainLayout
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<PageTitle>
+    Editar categoria — Quebrantados
+</PageTitle>
+
+<div class="mx-auto max-w-6xl">
+    <HeaderDashboard PageName="Organização do conteúdo" PageTitle="Editar categoria"
+                     PageDescription="Atualize o nome e o endereço da categoria mantendo a organização das reflexões.">
+        <ButtonReturnDashboard Href="/dashboard/categorias" Text="Voltar às categorias" />
+    </HeaderDashboard>
+
+    <div class="grid gap-6 py-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <EditForm Model="Input" OnValidSubmit="Handle" method="post" FormName="edit-category"
+                  class="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+            <DataAnnotationsValidator />
+
+            <div class="mb-8 border-b border-border pb-6">
+                <h2 class="font-serif text-2xl font-semibold text-primary-brown">Informações da categoria</h2>
+                <p class="mt-2 leading-7 text-muted-text">Revise o nome e o endereço utilizados para identificar esta
+                    categoria.</p>
+                </div>
+
+                <ValidationSummary
+                class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 empty:hidden" />
+
+                <div class="space-y-6">
+                    <div>
+                        <label for="Name" class="mb-2 block text-sm font-semibold text-primary-brown">Nome da
+                            categoria</label>
+                            <InputText @bind-Value="Input.Name" id="Name" placeholder="Ex.: Vida cristã"
+                                       class="w-full rounded-2xl border border-border bg-background px-4 py-3.5 text-main-text outline-none transition placeholder:text-muted-text/55 focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                            <div class="mt-2 flex items-start justify-between gap-4">
+                                <ValidationMessage For="() => Input.Name" class="text-sm text-red-700" />
+                                <span class="ml-auto shrink-0 text-xs text-muted-text">2–60 caracteres</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="Slug" class="mb-2 block text-sm font-semibold text-primary-brown">Slug da
+                                categoria</label>
+                                <div
+                                    class="flex rounded-2xl border border-border bg-background transition focus-within:border-primary-golden focus-within:ring-3 focus-within:ring-primary-golden/15">
+                                    <span
+                                    class="flex items-center border-r border-border px-4 text-sm text-muted-text">/categorias/</span>
+                                    <InputText @bind-Value="Input.Slug" id="Slug" placeholder="vida-crista"
+                                               class="min-w-0 flex-1 rounded-r-2xl bg-transparent px-4 py-3.5 text-main-text outline-none placeholder:text-muted-text/55" />
+                                </div>
+                                <div class="mt-2 flex items-start justify-between gap-4">
+                                    <ValidationMessage For="() => Input.Slug" class="text-sm text-red-700" />
+                                    <span class="ml-auto shrink-0 text-xs text-muted-text">Letras minúsculas, números e
+                                        hífens</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-9 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
+                                <ButtonReturnDashboard Href="/dashboard/categorias" Text="Cancelar" />
+                                <ButtonCreateResourceDashboard Resource="categoria" />
+                            </div>
+                        </EditForm>
+
+                        <aside class="grid content-start gap-5">
+                            <section class="rounded-3xl border border-primary-golden/25 bg-background-alternative p-6">
+                                <span class="grid size-11 place-items-center rounded-full bg-primary-golden/15 text-primary-golden"
+                                      aria-hidden="true">✦</span>
+                                <h2 class="mt-5 font-serif text-xl font-semibold text-primary-brown">Atenção ao endereço</h2>
+                                <p class="mt-3 text-sm leading-6 text-muted-text">Alterar o slug modifica a URL pública da categoria.
+                                    Links antigos podem deixar de funcionar se não houver redirecionamento.</p>
+                                </section>
+
+                                <section class="rounded-3xl border border-border bg-surface p-6">
+                                    <h2 class="font-serif text-xl font-semibold text-primary-brown">Antes de salvar</h2>
+                                    <ul class="mt-4 space-y-3 text-sm leading-6 text-muted-text">
+                                        <li class="flex gap-3"><span class="text-primary-golden">✓</span> Verifique se o novo nome não se
+                                            confunde com outra categoria.</li>
+                                            <li class="flex gap-3"><span class="text-primary-golden">✓</span>Evite alterar o slug sem
+                                                necessidade.</li>
+                                                <li class="flex gap-3"><span class="text-primary-golden">✓</span>Confira como a categoria aparecerá
+                                                    para os leitores.</li>
+                                                </ul>
+                                            </section>
+                                        </aside>
+                                    </div>
+                                </div>
+
+@code {
+    [SupplyParameterFromForm]
+    private EditCategoryInput Input { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        Input ??= new EditCategoryInput();
+    }
+
+    private void Handle()
+    {
+    }
+}

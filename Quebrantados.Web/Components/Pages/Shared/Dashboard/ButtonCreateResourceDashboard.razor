@@ -1,0 +1,10 @@
+<button type="submit"
+        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-brown px-5 py-3 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown">
+    <span class="text-lg leading-none" aria-hidden="true">+</span>
+    Adicionar @Resource
+</button>
+
+@code {
+    [Parameter, EditorRequired]
+    public string Resource { get; set; } = string.Empty;
+}
