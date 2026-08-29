@@ -1,0 +1,193 @@
+@page "/dashboard/posts/{Id:guid}/editar"
+@layout MainLayout
+@using Quebrantados.Web.Features.Reflections
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<PageTitle>Editar reflexão — Quebrantados</PageTitle>
+
+<div class="mx-auto max-w-360">
+    <HeaderDashboard PageName="Gerenciamento do conteúdo" PageTitle="Editar reflexão"
+                     PageDescription="Revise a mensagem, atualize sua organização e mantenha o conteúdo pronto para os leitores.">
+        <ButtonReturnDashboard Href="/dashboard/posts" Text="Voltar às reflexões" />
+    </HeaderDashboard>
+
+    <EditForm Model="Input" OnValidSubmit="Handle" method="post" FormName="edit-reflection">
+        <DataAnnotationsValidator />
+
+        <div class="grid gap-6 py-8 xl:grid-cols-[minmax(0,1fr)_21rem]">
+            <main class="space-y-6">
+                <section class="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+                    <div class="mb-8 border-b border-border pb-6">
+                        <h2 class="font-serif text-2xl font-semibold text-primary-brown">Informações da reflexão</h2>
+                        <p class="mt-2 leading-7 text-muted-text">Revise como o conteúdo será apresentado e encontrado pelos leitores.</p>
+                    </div>
+
+                    <ValidationSummary class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 empty:hidden" />
+
+                    <div class="space-y-6">
+                        <div>
+                            <label for="Title" class="mb-2 block text-sm font-semibold text-primary-brown">Título</label>
+                            <InputText @bind-Value="Input.Title" id="Title"
+                                       class="w-full rounded-2xl border border-border bg-background px-4 py-3.5 text-main-text outline-none transition placeholder:text-muted-text/55 focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                            <div class="mt-2 flex items-start justify-between gap-4">
+                                <ValidationMessage For="() => Input.Title" class="text-sm text-red-700" />
+                                <span class="ml-auto shrink-0 text-xs text-muted-text">5–120 caracteres</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="Slug" class="mb-2 block text-sm font-semibold text-primary-brown">Slug da reflexão</label>
+                            <div class="flex rounded-2xl border border-border bg-background transition focus-within:border-primary-golden focus-within:ring-3 focus-within:ring-primary-golden/15">
+                                <span class="flex items-center border-r border-border px-4 text-sm text-muted-text">/reflexoes/</span>
+                                <InputText @bind-Value="Input.Slug" id="Slug"
+                                           class="min-w-0 flex-1 rounded-r-2xl bg-transparent px-4 py-3.5 text-main-text outline-none placeholder:text-muted-text/55" />
+                            </div>
+                            <div class="mt-2 flex items-start justify-between gap-4">
+                                <ValidationMessage For="() => Input.Slug" class="text-sm text-red-700" />
+                                <span class="ml-auto shrink-0 text-xs text-muted-text">Letras minúsculas, números e hífens</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="Summary" class="mb-2 block text-sm font-semibold text-primary-brown">
+                                Resumo <span class="font-normal text-muted-text">(opcional)</span>
+                            </label>
+                            <InputTextArea @bind-Value="Input.Summary" id="Summary" rows="4"
+                                           class="w-full resize-y rounded-2xl border border-border bg-background px-4 py-3.5 leading-7 text-main-text outline-none transition placeholder:text-muted-text/55 focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                            <div class="mt-2 flex items-start justify-between gap-4">
+                                <ValidationMessage For="() => Input.Summary" class="text-sm text-red-700" />
+                                <span class="ml-auto shrink-0 text-xs text-muted-text">20–200 caracteres</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="rounded-3xl border border-border bg-surface p-6 shadow-sm sm:p-8">
+                    <div class="mb-6 flex flex-col justify-between gap-3 border-b border-border pb-6 sm:flex-row sm:items-end">
+                        <div>
+                            <h2 class="font-serif text-2xl font-semibold text-primary-brown">Conteúdo</h2>
+                            <p class="mt-2 leading-7 text-muted-text">Edite o corpo completo da reflexão.</p>
+                        </div>
+                        <span class="text-xs text-muted-text">Última atualização: hoje, às 09:15</span>
+                    </div>
+
+                    <label for="Body" class="sr-only">Conteúdo da reflexão</label>
+                    <InputTextArea @bind-Value="Input.Body" id="Body" rows="18"
+                                   class="min-h-112 w-full resize-y rounded-2xl border border-border bg-background px-5 py-4 font-serif text-lg leading-8 text-main-text outline-none transition placeholder:text-muted-text/55 focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                    <div class="mt-2 flex items-start justify-between gap-4">
+                        <ValidationMessage For="() => Input.Body" class="text-sm text-red-700" />
+                        <span class="ml-auto shrink-0 text-xs text-muted-text">Mínimo de 100 caracteres</span>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="grid content-start gap-5">
+                <section class="rounded-3xl border border-border bg-surface p-6">
+                    <h2 class="font-serif text-xl font-semibold text-primary-brown">Organização</h2>
+
+                    <div class="mt-5">
+                        <label for="Category" class="mb-2 block text-sm font-semibold text-primary-brown">Categoria</label>
+                        <InputSelect @bind-Value="Input.CategoryId" id="Category"
+                                     class="w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15">
+                            <option value="">Selecione uma categoria</option>
+                            @foreach (var category in Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="() => Input.CategoryId" class="mt-2 block text-sm text-red-700" />
+                    </div>
+
+                    <fieldset class="mt-6">
+                        <legend class="text-sm font-semibold text-primary-brown">Tags</legend>
+                        <p class="mt-1 text-xs leading-5 text-muted-text">Atualize os assuntos relacionados.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            @foreach (var tag in Tags)
+                            {
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" name="selected-tags" value="@tag.Id" checked="@tag.Selected" class="peer sr-only" />
+                                    <span class="inline-flex rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-text transition peer-checked:border-primary-golden peer-checked:bg-primary-golden/10 peer-checked:text-primary-brown hover:border-primary-golden/60"># @tag.Name</span>
+                                </label>
+                            }
+                        </div>
+                    </fieldset>
+                </section>
+
+                <section class="rounded-3xl border border-primary-golden/25 bg-background-alternative p-6">
+                    <div class="flex items-center justify-between gap-3">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted-text">Situação atual</p>
+                            <span class="mt-2 inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Rascunho</span>
+                        </div>
+                        <span class="grid size-11 place-items-center rounded-full bg-primary-golden/15 text-primary-golden" aria-hidden="true">✦</span>
+                    </div>
+                    <p class="mt-4 text-sm leading-6 text-muted-text">Esta reflexão ainda não está visível publicamente. Revise o conteúdo antes de publicá-la.</p>
+                </section>
+
+                <section class="rounded-3xl border border-border bg-surface p-6">
+                    <h2 class="font-serif text-xl font-semibold text-primary-brown">Salvar alterações</h2>
+                    <p class="mt-2 text-xs leading-5 text-muted-text">Mantenha como rascunho ou publique a versão atual para os leitores.</p>
+                    <div class="mt-5 grid gap-3">
+                        <button type="button" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold text-secondary-brown transition hover:border-primary-golden hover:bg-background-alternative">Salvar rascunho</button>
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-brown px-5 py-3 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown">
+                            <span aria-hidden="true">✓</span>
+                            Salvar e publicar
+                        </button>
+                    </div>
+                </section>
+
+                <section class="rounded-3xl border border-red-200 bg-red-50/60 p-6">
+                    <h2 class="font-serif text-lg font-semibold text-red-800">Excluir reflexão</h2>
+                    <p class="mt-2 text-xs leading-5 text-red-700">Esta ação removerá permanentemente o conteúdo do blog.</p>
+                    <button type="button" class="mt-4 w-full rounded-2xl border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-100">Excluir reflexão</button>
+                </section>
+            </aside>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private EditReflectionInput Input { get; set; } = default!;
+
+    private static readonly SelectionItem[] Categories =
+    [
+        new("1", "Antigo Testamento"),
+        new("2", "Devocionais"),
+        new("3", "Estudos bíblicos"),
+        new("4", "Novo Testamento"),
+        new("5", "Vida cristã")
+    ];
+
+    private static readonly TagSelection[] Tags =
+    [
+        new("1", "Esperança", false),
+        new("2", "Fé", true),
+        new("3", "Graça", true),
+        new("4", "Oração", false),
+        new("5", "Perdão", false),
+        new("6", "Sabedoria", false)
+    ];
+
+    protected override void OnInitialized()
+    {
+        Input ??= new EditReflectionInput
+        {
+            Title = "O que significa ter um coração quebrantado?",
+            Slug = "o-que-significa-ter-um-coracao-quebrantado",
+            Summary = "Uma reflexão sobre humildade, arrependimento e a transformação que nasce de um coração rendido a Deus.",
+            Body = "Um coração quebrantado não é simplesmente um coração triste. Nas Escrituras, o quebrantamento nasce quando reconhecemos nossa dependência de Deus e deixamos de sustentar a aparência de autossuficiência. É nesse lugar de sinceridade que a graça encontra espaço para transformar nossa maneira de pensar, agir e amar.",
+            CategoryId = "3"
+        };
+    }
+
+    private void Handle()
+    {
+    }
+
+    private sealed record SelectionItem(string Id, string Name);
+    private sealed record TagSelection(string Id, string Name, bool Selected);
+}
