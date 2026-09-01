@@ -1,4 +1,4 @@
-namespace Quebrantados.Web.Features.Categories;
+namespace Quebrantados.Web.DTOs.Categories;
 
 public class CategoryListItem(Guid id, string name, string slug, int postCount)
 {

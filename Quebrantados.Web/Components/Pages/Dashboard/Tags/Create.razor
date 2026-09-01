@@ -1,6 +1,5 @@
 @page "/dashboard/tags/adicionar"
 @layout MainLayout
-@using Quebrantados.Web.Features.Tags
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 
 <PageTitle>Nova tag — Quebrantados</PageTitle>
@@ -18,11 +17,12 @@
 
             <div class="mb-8 border-b border-border pb-6">
                 <h2 class="font-serif text-2xl font-semibold text-primary-brown">Informações da tag</h2>
-                <p class="mt-2 leading-7 text-muted-text">Informe um nome objetivo e um endereço amigável para a URL.</p>
+                <p class="mt-2 leading-7 text-muted-text">Informe um nome objetivo e um endereço amigável para a URL.
+                </p>
             </div>
 
             <ValidationSummary
-                class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 empty:hidden" />
+            class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 empty:hidden" />
 
             <div class="space-y-6">
                 <div>
@@ -37,45 +37,52 @@
 
                 <div>
                     <label for="Slug" class="mb-2 block text-sm font-semibold text-primary-brown">Slug da tag</label>
-                    <div class="flex rounded-2xl border border-border bg-background transition focus-within:border-primary-golden focus-within:ring-3 focus-within:ring-primary-golden/15">
-                        <span class="flex items-center border-r border-border px-4 text-sm text-muted-text">/tags/</span>
+                    <div
+                        class="flex rounded-2xl border border-border bg-background transition focus-within:border-primary-golden focus-within:ring-3 focus-within:ring-primary-golden/15">
+                        <span
+                        class="flex items-center border-r border-border px-4 text-sm text-muted-text">/tags/</span>
                         <InputText @bind-Value="Input.Slug" id="Slug" placeholder="esperanca"
                                    class="min-w-0 flex-1 rounded-r-2xl bg-transparent px-4 py-3.5 text-main-text outline-none placeholder:text-muted-text/55" />
                     </div>
                     <div class="mt-2 flex items-start justify-between gap-4">
                         <ValidationMessage For="() => Input.Slug" class="text-sm text-red-700" />
-                        <span class="ml-auto shrink-0 text-xs text-muted-text">Letras minúsculas, números e hífens</span>
+                        <span class="ml-auto shrink-0 text-xs text-muted-text">Letras minúsculas, números e
+                            hífens</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="mt-9 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
-                <ButtonReturnDashboard Href="/dashboard/tags" Text="Cancelar" />
-                <ButtonCreateResourceDashboard Resource="tag" />
-            </div>
-        </EditForm>
+                <div class="mt-9 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
+                    <ButtonReturnDashboard Href="/dashboard/tags" Text="Cancelar" />
+                    <ButtonCreateResourceDashboard Resource="tag" />
+                </div>
+            </EditForm>
 
-        <aside class="grid content-start gap-5">
-            <section class="rounded-3xl border border-primary-golden/25 bg-background-alternative p-6">
-                <span class="grid size-11 place-items-center rounded-full bg-primary-golden/15 text-primary-golden"
-                      aria-hidden="true">#</span>
-                <h2 class="mt-5 font-serif text-xl font-semibold text-primary-brown">Escolha um assunto específico</h2>
-                <p class="mt-3 text-sm leading-6 text-muted-text">
-                    Tags conectam reflexões por assuntos pontuais, como “Fé”, “Oração” ou “Esperança”. Temas mais amplos devem virar categorias.
-                </p>
-            </section>
+            <aside class="grid content-start gap-5">
+                <section class="rounded-3xl border border-primary-golden/25 bg-background-alternative p-6">
+                    <span class="grid size-11 place-items-center rounded-full bg-primary-golden/15 text-primary-golden"
+                          aria-hidden="true">#</span>
+                    <h2 class="mt-5 font-serif text-xl font-semibold text-primary-brown">Escolha um assunto específico</h2>
+                    <p class="mt-3 text-sm leading-6 text-muted-text">
+                        Tags conectam reflexões por assuntos pontuais, como “Fé”, “Oração” ou “Esperança”. Temas mais amplos
+                        devem virar categorias.
+                    </p>
+                </section>
 
-            <section class="rounded-3xl border border-border bg-surface p-6">
-                <h2 class="font-serif text-xl font-semibold text-primary-brown">Antes de adicionar</h2>
-                <ul class="mt-4 space-y-3 text-sm leading-6 text-muted-text">
-                    <li class="flex gap-3"><span class="text-primary-golden">✓</span> Confira se já existe uma tag semelhante.</li>
-                    <li class="flex gap-3"><span class="text-primary-golden">✓</span> Use nomes curtos e fáceis de relacionar.</li>
-                    <li class="flex gap-3"><span class="text-primary-golden">✓</span> Evite criar variações com o mesmo significado.</li>
-                </ul>
-            </section>
-        </aside>
-    </div>
-</div>
+                <section class="rounded-3xl border border-border bg-surface p-6">
+                    <h2 class="font-serif text-xl font-semibold text-primary-brown">Antes de adicionar</h2>
+                    <ul class="mt-4 space-y-3 text-sm leading-6 text-muted-text">
+                        <li class="flex gap-3"><span class="text-primary-golden">✓</span> Confira se já existe uma tag
+                            semelhante.</li>
+                            <li class="flex gap-3"><span class="text-primary-golden">✓</span> Use nomes curtos e fáceis de
+                                relacionar.</li>
+                                <li class="flex gap-3"><span class="text-primary-golden">✓</span> Evite criar variações com o mesmo
+                                    significado.</li>
+                                </ul>
+                            </section>
+                        </aside>
+                    </div>
+                </div>
 
 @code {
     [SupplyParameterFromForm]

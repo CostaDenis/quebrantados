@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Quebrantados.Web.Features.Categories;
+namespace Quebrantados.Web.DTOs.Categories;
 
 public class EditCategoryInput
 {

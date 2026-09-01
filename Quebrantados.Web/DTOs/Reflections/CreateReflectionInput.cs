@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Quebrantados.Web.Features.Reflections;
+namespace Quebrantados.Web.DTOs.Reflections;
 
-public class EditReflectionInput
+public class CreateReflectionInput
 {
     [Required(ErrorMessage = "Informe o título da reflexão!")]
     [StringLength(120, MinimumLength = 5, ErrorMessage = "O título deve possuir entre 5 e 120 caracteres.")]

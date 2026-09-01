@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Quebrantados.Web.Components;
 using Quebrantados.Web.Components.Account;
 using Quebrantados.Web.Data;
+using Quebrantados.Web.Repositories.Categories;
+using Quebrantados.Web.Repositories.Posts;
+using Quebrantados.Web.Repositories.Tags;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,10 @@ builder.Services.AddRazorComponents()
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 builder.Services.AddAuthentication(options =>
     {

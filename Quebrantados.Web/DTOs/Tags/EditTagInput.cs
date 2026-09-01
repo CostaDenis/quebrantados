@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Quebrantados.Web.Features.Tags;
+namespace Quebrantados.Web.DTOs.Tags;
 
-public class CreateTagInput
+public class EditTagInput
 {
     [Required(ErrorMessage = "Informe o nome da tag!")]
     [StringLength(
