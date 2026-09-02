@@ -4,9 +4,9 @@ namespace Quebrantados.Web.Services.Categories;
 
 public interface ICategoryService
 {
-    public Task<CategoryOutput?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-    public Task<List<CategoryListItem>> GetAllAsync(CancellationToken cancellationToken);
-    public Task CreateAsync(CreateCategoryInput input, CancellationToken cancellationToken);
-    public Task UpdateAsync(Guid id, EditCategoryInput input, CancellationToken cancellationToken);
-    public Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+    Task<CategoryOutput?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<List<CategoryListItem>> GetAllAsync(CancellationToken cancellationToken);
+    Task CreateAsync(CreateCategoryInput input, CancellationToken cancellationToken);
+    Task UpdateAsync(Guid id, EditCategoryInput input, CancellationToken cancellationToken);
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 }

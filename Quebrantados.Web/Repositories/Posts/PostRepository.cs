@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Quebrantados.Web.Data;
 using Quebrantados.Web.Entities;
+using Quebrantados.Web.ValueObjects;
 
 namespace Quebrantados.Web.Repositories.Posts;
 
@@ -13,7 +14,10 @@ public class PostRepository(AppDbContext context) : IPostRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public async Task<List<Post>> GetAllAsync(CancellationToken cancellationToken)
-        => await context.Posts.AsNoTracking().ToListAsync(cancellationToken);
+        => await context.Posts
+            .Include(post => post.Category)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
     public async Task CreateAsync(Post post, CancellationToken cancellationToken)
     {
@@ -33,4 +37,14 @@ public class PostRepository(AppDbContext context) : IPostRepository
         await context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<bool> ExistsTitleOrSlugAsync(string title, string slug, CancellationToken cancellationToken, Guid? excludedId = null)
+    {
+        Title normalizedTitle = title;
+        Slug normalizedSlug = slug;
+
+        return await context.Posts.AnyAsync(post =>
+            (!excludedId.HasValue || post.Id != excludedId.Value)
+                && (post.Title == normalizedTitle || post.Slug == normalizedSlug),
+            cancellationToken);
+    }
 }

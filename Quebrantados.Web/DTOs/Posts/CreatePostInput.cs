@@ -20,5 +20,5 @@ public class CreatePostInput
     public string Body { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Selecione uma categoria!")]
-    public string CategoryId { get; set; } = string.Empty;
+    public Guid CategoryId { get; set; }
 }
