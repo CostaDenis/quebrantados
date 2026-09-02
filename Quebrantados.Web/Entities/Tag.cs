@@ -20,4 +20,10 @@ public class Tag : Entity
     public TagName Name { get; private set; } = null!;
     public Slug Slug { get; private set; } = null!;
     public IReadOnlyCollection<Post> Posts { get { return _posts.ToArray(); } }
+
+    public void UpdateName(TagName name)
+        => Name = name;
+
+    public void UpdateSlug(Slug slug)
+        => Slug = slug;
 }

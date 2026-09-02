@@ -158,7 +158,7 @@
 
 @code {
     [SupplyParameterFromForm]
-    private CreateReflectionInput Input { get; set; } = default!;
+    private CreatePostInput Input { get; set; } = default!;
 
     private static readonly SelectionItem[] Categories =
     [
@@ -181,7 +181,7 @@
 
     protected override void OnInitialized()
     {
-        Input ??= new CreateReflectionInput();
+        Input ??= new CreatePostInput();
     }
 
     private void Handle()

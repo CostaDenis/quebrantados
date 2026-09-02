@@ -21,4 +21,10 @@ public class Category : Entity
     public CategoryName Name { get; private set; } = null!;
     public Slug Slug { get; private set; } = null!;
     public IReadOnlyCollection<Post> Posts { get { return _posts.ToArray(); } }
+
+    public void UpdateName(CategoryName categoryName)
+        => Name = categoryName;
+
+    public void UpdateSlug(Slug slug)
+        => Slug = slug;
 }

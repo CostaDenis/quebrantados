@@ -67,5 +67,16 @@ public class PostMapping : IEntityTypeConfiguration<Post>
 
         builder.Navigation(post => post.Tags)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Property(x => x.Status)
+            .HasColumnName("Status")
+            .HasConversion<string>()
+            .HasMaxLength(20)
+            .IsRequired();
+
+        builder.Property(x => x.PublishedAt)
+            .HasColumnName("PublishedAt")
+            .HasColumnType("timestampz")
+            .IsRequired(false);
     }
 }

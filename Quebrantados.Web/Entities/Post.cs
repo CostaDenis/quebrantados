@@ -1,3 +1,4 @@
+using Quebrantados.Web.Enums;
 using Quebrantados.Web.ValueObjects;
 
 namespace Quebrantados.Web.Entities;
@@ -28,5 +29,20 @@ public class Post : Entity
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime LastUpdateDate { get; private set; }
     public Category Category { get; private set; } = null!;
+    public EPostStatus Status { get; private set; } = EPostStatus.Draft; //todo post começa como rascunho
+    public DateTime? PublishedAt { get; private set; }
     public IReadOnlyCollection<Tag> Tags { get { return _tags.ToArray(); } }
+
+    public void Publish(DateTime publicationDate)
+    {
+        Status = EPostStatus.Published;
+        PublishedAt ??= publicationDate;
+        LastUpdateDate = publicationDate;
+    }
+
+    public void MoveToDraft(DateTime updateDate)
+    {
+        Status = EPostStatus.Draft;
+        LastUpdateDate = updateDate;
+    }
 }

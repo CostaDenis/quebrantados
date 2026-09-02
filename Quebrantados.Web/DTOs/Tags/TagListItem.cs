@@ -1,6 +1,6 @@
-namespace Quebrantados.Web.DTOs.Categories;
+namespace Quebrantados.Web.DTOs.Tags;
 
-public class CategoryListItem(Guid id, string name, string slug, int postCount)
+public class TagListItem(Guid id, string name, string slug, int postCount)
 {
     public Guid Id { get; init; } = id;
     public string Name { get; init; } = name;

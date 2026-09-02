@@ -173,7 +173,7 @@
     public Guid Id { get; set; }
 
     [SupplyParameterFromForm]
-    private EditReflectionInput Input { get; set; } = default!;
+    private CreatePostInput Input { get; set; } = default!;
 
     private static readonly SelectionItem[] Categories =
     [
@@ -196,7 +196,7 @@
 
     protected override void OnInitialized()
     {
-        Input ??= new EditReflectionInput
+        Input ??= new CreatePostInput
         {
             Title = "O que significa ter um coração quebrantado?",
             Slug = "o-que-significa-ter-um-coracao-quebrantado",
