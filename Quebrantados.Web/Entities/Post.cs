@@ -69,4 +69,21 @@ public class Post : Entity
         Status = EPostStatus.Draft;
         LastUpdateDate = updateDate;
     }
+
+    public void AddTag(Tag tag)
+    {
+        if (_tags.All(existingTag => existingTag.Id != tag.Id))
+            _tags.Add(tag);
+    }
+
+    public void RemoveTag(Tag tag)
+        => _tags.RemoveAll(existingTag => existingTag.Id == tag.Id);
+
+    public void ReplaceTags(IEnumerable<Tag> tags)
+    {
+        _tags.Clear();
+
+        foreach (var tag in tags.DistinctBy(tag => tag.Id))
+            _tags.Add(tag);
+    }
 }

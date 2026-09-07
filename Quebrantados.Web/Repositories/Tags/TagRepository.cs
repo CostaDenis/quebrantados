@@ -12,6 +12,9 @@ public class TagRepository(AppDbContext context) : ITagRepository
     public async Task<Tag?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => await context.Tags.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
+    public async Task<List<Tag>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+    => await context.Tags.Where(tag => ids.Contains(tag.Id)).ToListAsync(cancellationToken);
+
     public async Task<List<TagListItem>> GetAllWithPostCountAsync(CancellationToken cancellationToken)
         => await context.Tags
             .AsNoTracking()
@@ -55,4 +58,7 @@ public class TagRepository(AppDbContext context) : ITagRepository
                 && (tag.Name == normalizedName || tag.Slug == normalizedSlug),
             cancellationToken);
     }
+
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+        => await context.Tags.CountAsync(cancellationToken);
 }

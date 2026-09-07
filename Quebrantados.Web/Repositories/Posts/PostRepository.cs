@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Quebrantados.Web.Data;
+using Quebrantados.Web.DTOs.Posts;
 using Quebrantados.Web.Entities;
+using Quebrantados.Web.Enums;
 using Quebrantados.Web.ValueObjects;
 
 namespace Quebrantados.Web.Repositories.Posts;
@@ -47,4 +49,20 @@ public class PostRepository(AppDbContext context) : IPostRepository
                 && (post.Title == normalizedTitle || post.Slug == normalizedSlug),
             cancellationToken);
     }
+
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+        => await context.Posts.CountAsync(cancellationToken);
+
+    public async Task<int> CountByStatusAsync(EPostStatus status, CancellationToken cancellationToken)
+        => await context.Posts.Where(x => x.Status == status).CountAsync(cancellationToken);
+
+    public async Task<List<PostListItem>> GetRecentAsync(DateTime since, int limit, CancellationToken cancellationToken)
+        => await context.Posts
+        .AsNoTracking()
+        .Where(x => x.LastUpdateDate >= since)
+        .OrderByDescending(post => post.LastUpdateDate)
+        .Take(limit)
+        .Select(post => new PostListItem(post.Id, post.Title.Value, post.Slug.Value,
+            post.Category.Name.Value, post.Status, post.LastUpdateDate))
+        .ToListAsync(cancellationToken);
 }

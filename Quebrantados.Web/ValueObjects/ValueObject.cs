@@ -22,6 +22,6 @@ public abstract class ValueObject
         foreach (var component in GetEqualityComponents())
             hash.Add(component);
 
-        return base.GetHashCode();
+        return hash.ToHashCode();
     }
 }

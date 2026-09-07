@@ -1,10 +1,14 @@
+using Quebrantados.Web.Enums;
+
 namespace Quebrantados.Web.DTOs.Posts;
 
-public class PostListItem(string title, string categoryName,
-    string status, DateTime lastUpdateDate)
+public class PostListItem(Guid id, string title, string slug,
+    string categoryName, EPostStatus status, DateTime lastUpdateDate)
 {
+    public Guid Id { get; init; } = id;
     public string Title { get; init; } = title;
+    public string Slug { get; init; } = slug;
     public string CategoryName { get; init; } = categoryName;
-    public string Status { get; init; } = status;
+    public EPostStatus Status { get; init; } = status;
     public DateTime LastUpdateDate { get; init; } = lastUpdateDate;
 }

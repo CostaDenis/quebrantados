@@ -43,7 +43,7 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
 
     public async Task<bool> ExistsByNameOrSlugAsync(string name, string slug, CancellationToken cancellationToken, Guid? excludedId = null)
     {
-        TagName normalizedName = name;
+        CategoryName normalizedName = name;
         Slug normalizedSlug = slug;
 
         return await context.Categories.AnyAsync(
@@ -54,4 +54,7 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
     public async Task<bool> HasPostsAsync(Guid categoryId, CancellationToken cancellationToken)
         => await context.Posts
             .AnyAsync(x => x.Category.Id == categoryId, cancellationToken);
+
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+        => await context.Categories.CountAsync(cancellationToken);
 }

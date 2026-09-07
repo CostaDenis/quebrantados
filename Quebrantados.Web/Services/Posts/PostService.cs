@@ -3,24 +3,26 @@ using Quebrantados.Web.Entities;
 using Quebrantados.Web.Exceptions.Services;
 using Quebrantados.Web.Repositories.Categories;
 using Quebrantados.Web.Repositories.Posts;
+using Quebrantados.Web.Repositories.Tags;
 using Quebrantados.Web.ValueObjects;
 
 namespace Quebrantados.Web.Services.Posts;
 
 public class PostService(IPostRepository postRepository,
-    ICategoryRepository categoryRepository) : IPostService
+    ICategoryRepository categoryRepository, ITagRepository tagRepository) : IPostService
 {
 
-    public async Task<PostOutput?> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<PostOutput?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var post = await postRepository.GetByIdAsync(id, cancellationToken);
 
         if (post is null)
             return null;
 
-        return new PostOutput(
-            post.Title, post.Slug, post.Summary?.Value, post.Body,
-            post.CreatedAt, post.LastUpdateDate, post.Category.Name.Value);
+        return new PostOutput(post.Id, post.Title, post.Slug,
+            post.Summary?.Value, post.Body, post.CreatedAt,
+            post.LastUpdateDate, post.Category.Id, post.Category.Name.Value,
+            post.Status, post.PublishedAt, post.Tags.Select(tag => tag.Id).ToList());
     }
 
     public async Task<List<PostListItem>> GetAllAsync(CancellationToken cancellationToken)
@@ -28,12 +30,12 @@ public class PostService(IPostRepository postRepository,
         var posts = await postRepository.GetAllAsync(cancellationToken);
 
         return posts.Select(post => new PostListItem
-            (post.Title, post.Category.Name.Value,
-                post.Status.ToString(), post.LastUpdateDate
+            (post.Id, post.Title, post.Slug, post.Category.Name.Value,
+                post.Status, post.LastUpdateDate
             )).ToList();
     }
 
-    public async Task CreateAsync(CreatePostInput input, CancellationToken cancellationToken)
+    public async Task CreateAsync(CreatePostInput input, bool publish, CancellationToken cancellationToken)
     {
         var title = new Title(input.Title);
         var slug = new Slug(input.Slug);
@@ -46,9 +48,23 @@ public class PostService(IPostRepository postRepository,
         var category = await categoryRepository.GetByIdAsync(input.CategoryId, cancellationToken)
             ?? throw new CategoryNotFoundException();
 
-        var post = new Post(title, slug,
-            input.Summary is null ? null : new Summary(input.Summary),
-            new Body(input.Body), category);
+        var summary = string.IsNullOrWhiteSpace(input.Summary)
+            ? null
+            : new Summary(input.Summary);
+
+        var post = new Post(title, slug, summary, new Body(input.Body), category);
+
+        var requestedTagIds = input.TagIds.Distinct().ToList();
+
+        var tags = await tagRepository.GetByIdsAsync(requestedTagIds, cancellationToken);
+
+        if (tags.Count != requestedTagIds.Count)
+            throw new TagNotFoundException();
+
+        post.ReplaceTags(tags);
+
+        if (publish)
+            post.Publish(DateTime.UtcNow);
 
         await postRepository.CreateAsync(post, cancellationToken);
     }
@@ -69,10 +85,22 @@ public class PostService(IPostRepository postRepository,
         var category = await categoryRepository.GetByIdAsync(input.CategoryId, cancellationToken)
             ?? throw new CategoryNotFoundException();
 
+        var requestedTagIds = input.TagIds.Distinct().ToList();
+
+        var tags = await tagRepository.GetByIdsAsync(requestedTagIds, cancellationToken);
+
+        if (tags.Count != requestedTagIds.Count)
+            throw new TagNotFoundException();
+
+        post.ReplaceTags(tags);
+
+        var summary = string.IsNullOrWhiteSpace(input.Summary)
+            ? null
+            : new Summary(input.Summary);
+
         post.UpdateTitle(title);
         post.UpdateSlug(slug);
-        post.UpdateSummary(
-        input.Summary is null ? null : new Summary(input.Summary));
+        post.UpdateSummary(summary);
         post.UpdateBody(new Body(input.Body));
         post.UpdateCategory(category);
         post.UpdateLastUpdateDate(DateTime.UtcNow);

@@ -21,4 +21,7 @@ public class EditPostInput
 
     [Required(ErrorMessage = "Selecione uma categoria!")]
     public Guid CategoryId { get; set; }
+
+    public List<Guid> TagIds { get; set; } = [];
+
 }

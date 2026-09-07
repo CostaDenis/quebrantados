@@ -173,15 +173,15 @@
     public Guid Id { get; set; }
 
     [SupplyParameterFromForm]
-    private CreatePostInput Input { get; set; } = default!;
+    private EditPostInput Input { get; set; } = default!;
 
     private static readonly SelectionItem[] Categories =
     [
-        new("1", "Antigo Testamento"),
-        new("2", "Devocionais"),
-        new("3", "Estudos bíblicos"),
-        new("4", "Novo Testamento"),
-        new("5", "Vida cristã")
+        new(Guid.Parse("d40c17f8-8d87-49cd-88d4-9c00ab4a6401"), "Antigo Testamento"),
+        new(Guid.Parse("d40c17f8-8d87-49cd-88d4-9c00ab4a6402"), "Devocionais"),
+        new(Guid.Parse("d40c17f8-8d87-49cd-88d4-9c00ab4a6403"), "Estudos bíblicos"),
+        new(Guid.Parse("d40c17f8-8d87-49cd-88d4-9c00ab4a6404"), "Novo Testamento"),
+        new(Guid.Parse("d40c17f8-8d87-49cd-88d4-9c00ab4a6405"), "Vida cristã")
     ];
 
     private static readonly TagSelection[] Tags =
@@ -196,13 +196,13 @@
 
     protected override void OnInitialized()
     {
-        Input ??= new CreatePostInput
+        Input ??= new EditPostInput
         {
             Title = "O que significa ter um coração quebrantado?",
             Slug = "o-que-significa-ter-um-coracao-quebrantado",
             Summary = "Uma reflexão sobre humildade, arrependimento e a transformação que nasce de um coração rendido a Deus.",
             Body = "Um coração quebrantado não é simplesmente um coração triste. Nas Escrituras, o quebrantamento nasce quando reconhecemos nossa dependência de Deus e deixamos de sustentar a aparência de autossuficiência. É nesse lugar de sinceridade que a graça encontra espaço para transformar nossa maneira de pensar, agir e amar.",
-            CategoryId = "3"
+            CategoryId = Categories[2].Id
         };
     }
 
@@ -210,6 +210,6 @@
     {
     }
 
-    private sealed record SelectionItem(string Id, string Name);
+    private sealed record SelectionItem(Guid Id, string Name);
     private sealed record TagSelection(string Id, string Name, bool Selected);
 }
