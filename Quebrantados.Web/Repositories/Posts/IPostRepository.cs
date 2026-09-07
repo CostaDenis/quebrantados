@@ -14,5 +14,6 @@ public interface IPostRepository
     Task<bool> ExistsTitleOrSlugAsync(string title, string slug, CancellationToken cancellationToken, Guid? excludedId = null);
     Task<int> CountAsync(CancellationToken cancellationToken);
     Task<int> CountByStatusAsync(EPostStatus status, CancellationToken cancellationToken);
+    Task<int> CountUpdatedSinceAsync(DateTime since, CancellationToken cancellationToken);
     Task<List<PostListItem>> GetRecentAsync(DateTime since, int limit, CancellationToken cancellationToken);
 }

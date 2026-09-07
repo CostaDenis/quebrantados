@@ -1,0 +1,85 @@
+@rendermode InteractiveServer
+@implements IDisposable
+@inject NavigationManager NavigationManager
+
+@if (_isVisible && !string.IsNullOrWhiteSpace(Message))
+{
+    <div class="notification fixed inset-x-5 top-5 z-50 max-w-sm rounded-2xl border p-4 shadow-xl sm:right-5 sm:left-auto sm:w-full @ContainerClasses"
+         role="@(IsError ? "alert" : "status")"
+         aria-live="@(IsError ? "assertive" : "polite")">
+        <div class="flex items-start gap-3">
+            <span class="grid size-9 shrink-0 place-items-center rounded-full @IconClasses" aria-hidden="true">
+                @(IsError ? "!" : "✓")
+            </span>
+            <div class="pt-0.5">
+                <strong class="block text-sm font-semibold">@(IsError ? "Não foi possível concluir" : "Tudo certo!")</strong>
+                <p class="mt-1 text-sm leading-5">@Message</p>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public bool IsError { get; set; }
+    [Parameter] public string? RedirectUrl { get; set; }
+
+    private const int DisplayDurationInMilliseconds = 3000;
+    private CancellationTokenSource? _timerCancellation;
+    private bool _isVisible;
+
+    protected override void OnParametersSet()
+    {
+        CancelTimer();
+        _isVisible = !string.IsNullOrWhiteSpace(Message);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_isVisible || _timerCancellation is not null)
+            return Task.CompletedTask;
+
+        _timerCancellation = new CancellationTokenSource();
+        _ = CompleteNotificationAsync(_timerCancellation.Token);
+
+        return Task.CompletedTask;
+    }
+
+    private async Task CompleteNotificationAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(DisplayDurationInMilliseconds, cancellationToken);
+
+            if (!string.IsNullOrWhiteSpace(RedirectUrl))
+            {
+                await InvokeAsync(() => NavigationManager.NavigateTo(RedirectUrl));
+                return;
+            }
+
+            _isVisible = false;
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
+    private string ContainerClasses => IsError
+        ? "border-red-200 bg-red-50 text-red-800"
+        : "border-green-200 bg-green-50 text-green-800";
+
+    private string IconClasses => IsError
+        ? "bg-red-100 text-red-700"
+        : "bg-green-100 text-green-700";
+
+    public void Dispose()
+        => CancelTimer();
+
+    private void CancelTimer()
+    {
+        _timerCancellation?.Cancel();
+        _timerCancellation?.Dispose();
+        _timerCancellation = null;
+    }
+}

@@ -14,4 +14,5 @@ public interface ICategoryRepository
         CancellationToken cancellationToken, Guid? excludedId = null);
     Task<bool> HasPostsAsync(Guid categoryId, CancellationToken cancellationToken);
     Task<int> CountAsync(CancellationToken cancellationToken);
+    Task<int> CountEmptyAsync(CancellationToken cancellationToken);
 }

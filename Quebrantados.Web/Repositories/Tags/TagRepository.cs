@@ -61,4 +61,8 @@ public class TagRepository(AppDbContext context) : ITagRepository
 
     public async Task<int> CountAsync(CancellationToken cancellationToken)
         => await context.Tags.CountAsync(cancellationToken);
+
+    public async Task<int> CountUnusedAsync(CancellationToken cancellationToken)
+        => await context.Tags
+            .CountAsync(tag => !tag.Posts.Any(), cancellationToken);
 }

@@ -57,4 +57,8 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
 
     public async Task<int> CountAsync(CancellationToken cancellationToken)
         => await context.Categories.CountAsync(cancellationToken);
+
+    public async Task<int> CountEmptyAsync(CancellationToken cancellationToken)
+        => await context.Categories
+            .CountAsync(category => !category.Posts.Any(), cancellationToken);
 }

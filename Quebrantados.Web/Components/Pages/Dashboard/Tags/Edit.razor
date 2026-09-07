@@ -1,10 +1,14 @@
 @page "/dashboard/tags/{Id:guid}/editar"
 @layout MainLayout
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits EditPage
 
 <PageTitle>Editar tag — Quebrantados</PageTitle>
 
 <div class="mx-auto max-w-6xl">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError"
+                           RedirectUrl="@NotificationRedirectUrl" />
+
     <HeaderDashboard PageName="Organização do conteúdo" PageTitle="Editar tag"
                      PageDescription="Atualize o nome e o endereço da tag mantendo os assuntos do blog bem organizados.">
         <ButtonReturnDashboard Href="/dashboard/tags" Text="Voltar às tags" />
@@ -88,24 +92,3 @@
                         </aside>
                     </div>
                 </div>
-
-@code {
-    [Parameter]
-    public Guid Id { get; set; }
-
-    [SupplyParameterFromForm]
-    private EditTagInput Input { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-        Input ??= new EditTagInput
-        {
-            Name = "Esperança",
-            Slug = "esperanca"
-        };
-    }
-
-    private void Handle()
-    {
-    }
-}

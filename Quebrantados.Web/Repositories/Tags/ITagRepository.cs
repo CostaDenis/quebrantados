@@ -14,4 +14,5 @@ public interface ITagRepository
     Task<bool> ExistsByNameOrSlugAsync(string name, string slug,
         CancellationToken cancellationToken, Guid? excludedId = null);
     Task<int> CountAsync(CancellationToken cancellationToken);
+    Task<int> CountUnusedAsync(CancellationToken cancellationToken);
 }

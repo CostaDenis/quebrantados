@@ -1,10 +1,14 @@
 @page "/dashboard/tags/adicionar"
 @layout MainLayout
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits CreatePage
 
 <PageTitle>Nova tag — Quebrantados</PageTitle>
 
 <div class="mx-auto max-w-6xl">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError"
+                           RedirectUrl="@NotificationRedirectUrl" />
+
     <HeaderDashboard PageName="Organização do conteúdo" PageTitle="Nova tag"
                      PageDescription="Crie um novo assunto para conectar reflexões relacionadas no blog.">
         <ButtonReturnDashboard Href="/dashboard/tags" Text="Voltar às tags" />
@@ -83,17 +87,3 @@
                         </aside>
                     </div>
                 </div>
-
-@code {
-    [SupplyParameterFromForm]
-    private CreateTagInput Input { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-        Input ??= new CreateTagInput();
-    }
-
-    private void Handle()
-    {
-    }
-}

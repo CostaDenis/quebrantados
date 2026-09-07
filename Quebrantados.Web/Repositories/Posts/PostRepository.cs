@@ -56,6 +56,10 @@ public class PostRepository(AppDbContext context) : IPostRepository
     public async Task<int> CountByStatusAsync(EPostStatus status, CancellationToken cancellationToken)
         => await context.Posts.Where(x => x.Status == status).CountAsync(cancellationToken);
 
+    public async Task<int> CountUpdatedSinceAsync(DateTime since, CancellationToken cancellationToken)
+        => await context.Posts
+            .CountAsync(post => post.LastUpdateDate >= since, cancellationToken);
+
     public async Task<List<PostListItem>> GetRecentAsync(DateTime since, int limit, CancellationToken cancellationToken)
         => await context.Posts
         .AsNoTracking()

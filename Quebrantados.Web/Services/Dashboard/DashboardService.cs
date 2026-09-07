@@ -21,13 +21,40 @@ public class DashboardService(IPostRepository postRepository,
         var draftPostCount = await postRepository
             .CountByStatusAsync(EPostStatus.Draft, cancellationToken);
 
-        var categoryCount = await categoryRepository.CountAsync(cancellationToken);
+        var categories = await categoryRepository
+            .GetAllWithPostCountAsync(cancellationToken);
+
+        var categoryCount = categories.Count;
+        var emptyCategoryCount = categories.Count(category => category.PostCount == 0);
+
+        var mostUsedCategories = categories
+            .OrderByDescending(category => category.PostCount)
+            .ThenBy(category => category.Name)
+            .Take(4)
+            .ToList();
+
+        var highestPostCount = mostUsedCategories.FirstOrDefault()?.PostCount ?? 0;
+
+        var categorySummary = mostUsedCategories
+            .Select(category => new CategorySummaryItem(
+                category.Name,
+                category.PostCount,
+                highestPostCount == 0
+                    ? 0
+                    : (int)Math.Round(category.PostCount * 100d / highestPostCount)))
+            .ToList();
+
         var tagCount = await tagRepository.CountAsync(cancellationToken);
+        var unusedTagCount = await tagRepository.CountUnusedAsync(cancellationToken);
+
+        var recentUpdateCount = await postRepository
+            .CountUpdatedSinceAsync(since, cancellationToken);
 
         var recentPosts = await postRepository
             .GetRecentAsync(since, 4, cancellationToken);
 
         return new DashboardOutput(postCount, publishedPostCount, draftPostCount,
-            categoryCount, tagCount, recentPosts);
+            categoryCount, emptyCategoryCount, tagCount, unusedTagCount,
+            recentUpdateCount, recentPosts, categorySummary);
     }
 }

@@ -1,0 +1,10 @@
+<a href="@Href"
+   class="group inline-flex w-full items-center justify-between rounded-2xl border border-border bg-background px-4 py-3.5 text-sm font-semibold text-primary-brown transition hover:border-primary-golden/60 hover:bg-background-alternative">
+    <span>@Text</span>
+    <span class="text-primary-golden transition group-hover:translate-x-1" aria-hidden="true">→</span>
+</a>
+
+@code {
+    [Parameter, EditorRequired] public string Href { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Text { get; set; } = string.Empty;
+}
