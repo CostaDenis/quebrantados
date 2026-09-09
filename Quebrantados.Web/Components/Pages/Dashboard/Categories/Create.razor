@@ -1,12 +1,16 @@
 @page "/dashboard/categorias/adicionar"
 @layout MainLayout
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits CreatePage
 
 <PageTitle>
     Nova categoria — Quebrantados
 </PageTitle>
 
 <div class="mx-auto max-w-6xl">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError"
+                           RedirectUrl="@NotificationRedirectUrl" />
+
     <HeaderDashboard PageName="Organização do conteúdo" PageTitle="Nova categoria"
                      PageDescription="Crie um novo caminho editorial para organizar as reflexões do blog.">
         <ButtonReturnDashboard Href="/dashboard/categorias" Text="Voltar às categorias" />
@@ -84,17 +88,3 @@
                                     </aside>
                                 </div>
                             </div>
-
-@code {
-    [SupplyParameterFromForm]
-    private CreateCategoryInput Input { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-        Input ??= new CreateCategoryInput();
-    }
-
-    private void Handle()
-    {
-    }
-}

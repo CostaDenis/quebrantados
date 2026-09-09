@@ -1,0 +1,130 @@
+@page "/dashboard/reflexoes"
+@layout MainLayout
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits PostsPage
+@rendermode InteractiveServer
+
+<PageTitle>Reflexões — Quebrantados</PageTitle>
+
+<div class="mx-auto max-w-360">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError" />
+
+    <HeaderDashboard PageName="Gerenciamento do conteúdo" PageTitle="Reflexões"
+                     PageDescription="Acompanhe, revise e organize os textos publicados no blog.">
+        <LinkDashboard Href="/dashboard/reflexoes/adicionar">
+            <SpanDashboard Value="+" />
+            Nova reflexão
+        </LinkDashboard>
+    </HeaderDashboard>
+
+    <section class="grid gap-4 py-8 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo das reflexões">
+        @if (PostItems is null)
+        {
+            @foreach (var _ in Enumerable.Range(0, 4))
+            {
+                <article class="animate-pulse rounded-3xl border border-border bg-surface p-5" aria-hidden="true">
+                    <div class="h-4 w-28 rounded bg-background-alternative"></div>
+                    <div class="mt-3 h-10 w-14 rounded bg-background-alternative"></div>
+                    <div class="mt-4 h-3 w-40 rounded bg-background-alternative"></div>
+                </article>
+            }
+        }
+        else
+        {
+            <DashboardMetricCard Label="Total de reflexões" Value="@PostItems.Count" Symbol="✦"
+                                 Note="Todo o conteúdo cadastrado" />
+            <DashboardMetricCard Label="Publicadas" Value="@PublishedPostCount" Symbol="✓"
+                                 Note="Disponíveis para os leitores" />
+            <DashboardMetricCard Label="Rascunhos" Value="@DraftPostCount" Symbol="✎"
+                                 Note="Aguardando revisão ou conclusão" />
+            <DashboardMetricCard Label="Atualizadas recentemente" Value="@RecentlyUpdatedCount" Symbol="↻"
+                                 Note="Alterações nos últimos 7 dias" />
+        }
+    </section>
+
+    <section class="overflow-hidden rounded-3xl border border-border bg-surface">
+        <div class="flex flex-col justify-between gap-4 border-b border-border p-5 lg:flex-row lg:items-center lg:px-6">
+            <div>
+                <h2 class="font-serif text-2xl font-semibold text-primary-brown">Todas as reflexões</h2>
+                <p class="mt-1 text-sm text-muted-text">Visualize e gerencie o conteúdo editorial do blog.</p>
+            </div>
+
+            <div class="flex w-full flex-col gap-3 sm:flex-row lg:max-w-xl">
+                <label class="relative block flex-1">
+                    <span class="sr-only">Buscar reflexão</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                         class="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-text" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6" />
+                        <path d="m16 16 4 4" />
+                    </svg>
+                    <input type="search" placeholder="Buscar reflexão..."
+                           class="w-full rounded-2xl border border-border bg-background py-2.5 pr-4 pl-10 text-sm text-main-text outline-none transition placeholder:text-muted-text/60 focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                </label>
+                <label>
+                    <span class="sr-only">Filtrar por situação</span>
+                    <select class="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15 sm:w-38">
+                        <option>Todas</option>
+                        <option>Publicadas</option>
+                        <option>Rascunhos</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-240 border-collapse text-left">
+                <thead class="bg-background-alternative/65 text-xs font-bold uppercase tracking-[0.14em] text-muted-text">
+                    <tr>
+                        <th class="px-6 py-4">Reflexão</th>
+                        <th class="px-6 py-4">Categoria</th>
+                        <th class="px-6 py-4">Situação</th>
+                        <th class="px-6 py-4">Última atualização</th>
+                        <th class="px-6 py-4 text-right">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                    @if (PostItems is null)
+                    {
+                        <tr><td colspan="5" class="px-6 py-8 text-center text-sm text-muted-text">Carregando reflexões...</td></tr>
+                    }
+                    else if (PostItems.Count == 0)
+                    {
+                        <tr><td colspan="5" class="px-6 py-10 text-center text-sm text-muted-text">Nenhuma reflexão cadastrada ainda.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var post in PostItems)
+                        {
+                            <DashboardPostRow Id="@post.Id" Title="@post.Title" Slug="@post.Slug"
+                                              CategoryName="@post.CategoryName" Status="@post.Status"
+                                              LastUpdateDate="@post.LastUpdateDate"
+                                              OnDeleteRequested="@RequestDelete" />
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="flex flex-col justify-between gap-3 border-t border-border px-5 py-4 text-sm text-muted-text sm:flex-row sm:items-center sm:px-6">
+            <span>Exibindo @(PostItems?.Count ?? 0) reflexões</span>
+            <span>Ordenadas pela última atualização</span>
+        </footer>
+    </section>
+
+    <aside class="mt-6 flex gap-4 rounded-3xl border border-primary-golden/25 bg-background-alternative p-5 sm:items-center">
+        <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-golden/15 text-primary-golden"
+              aria-hidden="true">✦</span>
+        <p class="text-sm leading-6 text-muted-text">
+            <strong class="text-primary-brown">Antes de publicar:</strong>
+            revise o título, o resumo, a categoria e as tags para facilitar a leitura e a descoberta da reflexão.
+        </p>
+    </aside>
+</div>
+
+<DashboardDeleteConfirmation IsOpen="@(_postPendingDeletion is not null)"
+                             IsProcessing="@IsDeleting"
+                             Title="Excluir reflexão"
+                             Message="@DeleteConfirmationMessage"
+                             ConfirmText="Excluir reflexão"
+                             OnConfirm="@ConfirmDeleteAsync"
+                             OnCancel="@CancelDelete" />

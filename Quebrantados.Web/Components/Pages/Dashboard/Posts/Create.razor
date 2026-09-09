@@ -1,13 +1,18 @@
 @page "/dashboard/reflexoes/adicionar"
 @layout MainLayout
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits CreatePage
+@rendermode InteractiveServer
 
 <PageTitle>Nova reflexão — Quebrantados</PageTitle>
 
 <div class="mx-auto max-w-360">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError"
+                           RedirectUrl="@NotificationRedirectUrl" />
+
     <HeaderDashboard PageName="Gerenciamento do conteúdo" PageTitle="Nova reflexão"
                      PageDescription="Transforme uma mensagem em um conteúdo claro, acolhedor e edificante.">
-        <ButtonReturnDashboard Href="/dashboard/posts" Text="Voltar às reflexões" />
+        <ButtonReturnDashboard Href="/dashboard/reflexoes" Text="Voltar às reflexões" />
     </HeaderDashboard>
 
     <EditForm Model="Input" OnValidSubmit="Handle" method="post" FormName="create-reflection">
@@ -113,7 +118,8 @@
                                         @foreach (var tag in Tags)
                                         {
                                             <label class="cursor-pointer">
-                                                <input type="checkbox" name="selected-tags" value="@tag.Id" class="peer sr-only" />
+                                                <input type="checkbox" checked="@Input.TagIds.Contains(tag.Id)"
+                                                       @onchange="eventArgs => ToggleTag(tag.Id, eventArgs)" class="peer sr-only" />
                                                 <span
                                                     class="inline-flex rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold text-muted-text transition peer-checked:border-primary-golden peer-checked:bg-primary-golden/10 peer-checked:text-primary-brown hover:border-primary-golden/60">#
                                                     @tag.Name</span>
@@ -141,11 +147,11 @@
                                         <p class="mt-2 text-xs leading-5 text-muted-text">Você poderá salvar para continuar depois ou
                                             publicar quando o texto estiver pronto.</p>
                                             <div class="mt-5 grid gap-3">
-                                                <button type="button"
-                                                        class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold text-secondary-brown transition hover:border-primary-golden hover:bg-background-alternative">Salvar
+                                                <button type="submit" @onclick="SaveAsDraft"
+                                                        class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold text-secondary-brown transition hover:border-primary-golden hover:bg-background-alternative cursor-pointer">Salvar
                                                     rascunho</button>
-                                                    <button type="submit"
-                                                            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-brown px-5 py-3 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown">
+                                                    <button type="submit" @onclick="Publish"
+                                                            class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary-brown px-5 py-3 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown cursor-pointer">
                                                         <span aria-hidden="true">✓</span>
                                                         Publicar reflexão
                                                     </button>
@@ -155,38 +161,3 @@
                                     </div>
                                 </EditForm>
                             </div>
-
-@code {
-    [SupplyParameterFromForm]
-    private CreatePostInput Input { get; set; } = default!;
-
-    private static readonly SelectionItem[] Categories =
-    [
-        new("1", "Antigo Testamento"),
-        new("2", "Devocionais"),
-        new("3", "Estudos bíblicos"),
-        new("4", "Novo Testamento"),
-        new("5", "Vida cristã")
-    ];
-
-    private static readonly SelectionItem[] Tags =
-    [
-        new("1", "Esperança"),
-        new("2", "Fé"),
-        new("3", "Graça"),
-        new("4", "Oração"),
-        new("5", "Perdão"),
-        new("6", "Sabedoria")
-    ];
-
-    protected override void OnInitialized()
-    {
-        Input ??= new CreatePostInput();
-    }
-
-    private void Handle()
-    {
-    }
-
-    private sealed record SelectionItem(string Id, string Name);
-}

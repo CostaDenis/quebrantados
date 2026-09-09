@@ -1,12 +1,16 @@
-@page "/dashboard/categorias/editar"
+@page "/dashboard/categorias/{Id:guid}/editar"
 @layout MainLayout
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits EditorPage
 
 <PageTitle>
     Editar categoria — Quebrantados
 </PageTitle>
 
 <div class="mx-auto max-w-6xl">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError"
+                           RedirectUrl="@NotificationRedirectUrl" />
+
     <HeaderDashboard PageName="Organização do conteúdo" PageTitle="Editar categoria"
                      PageDescription="Atualize o nome e o endereço da categoria mantendo a organização das reflexões.">
         <ButtonReturnDashboard Href="/dashboard/categorias" Text="Voltar às categorias" />
@@ -58,7 +62,11 @@
 
                             <div class="mt-9 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
                                 <ButtonReturnDashboard Href="/dashboard/categorias" Text="Cancelar" />
-                                <ButtonCreateResourceDashboard Resource="categoria" />
+                                <button type="submit"
+                                        class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-primary-brown px-5 py-3 font-semibold text-surface shadow-lg shadow-primary-brown/10 transition hover:-translate-y-0.5 hover:bg-secondary-brown">
+                                    <span aria-hidden="true">✓</span>
+                                    Salvar alterações
+                                </button>
                             </div>
                         </EditForm>
 
@@ -86,16 +94,3 @@
                                     </div>
                                 </div>
 
-@code {
-    [SupplyParameterFromForm]
-    private EditCategoryInput Input { get; set; } = default!;
-
-    protected override void OnInitialized()
-    {
-        Input ??= new EditCategoryInput();
-    }
-
-    private void Handle()
-    {
-    }
-}

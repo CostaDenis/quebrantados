@@ -1,0 +1,47 @@
+<tr class="transition hover:bg-background/70">
+    <td class="px-6 py-5">
+        <div class="flex items-center gap-3">
+            <span
+            class="grid size-10 shrink-0 place-items-center rounded-xl bg-background-alternative font-serif font-semibold text-primary-golden"
+            aria-hidden="true">@Initial</span>
+            <strong class="font-semibold text-primary-brown">@Name</strong>
+        </div>
+    </td>
+    <td class="px-6 py-5 font-mono text-sm text-muted-text">/categorias/@Slug</td>
+    <td class="px-6 py-5 text-center font-semibold text-primary-brown">@PostCount</td>
+    <td class="px-6 py-5">
+        @if (PostCount > 0)
+        {
+            <span class="whitespace-nowrap rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">Em
+                uso</span>
+            }
+        else
+            {
+                <span class="whitespace-nowrap rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Sem
+                    conteúdo</span>
+                }
+            </td>
+            <td class="px-6 py-5">
+                <div class="flex justify-end gap-2">
+                    <a href="@($"/dashboard/categorias/{Id}/editar")" aria-label="Editar @Name"
+                       class="rounded-xl bg-background-alternative px-3 py-2 text-xs font-semibold text-secondary-brown transition hover:bg-border">
+                        Editar
+                    </a>
+                    <button type="button" aria-label="Excluir @Name" @onclick="RequestDeleteAsync"
+                            class="rounded-xl border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-50 cursor-pointer">
+                        Excluir
+                    </button>
+                </div>
+            </td>
+        </tr>
+
+@code {
+    [Parameter, EditorRequired] public Guid Id { get; set; }
+    [Parameter, EditorRequired] public string Name { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Slug { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public int PostCount { get; set; }
+    [Parameter] public EventCallback<Guid> OnDeleteRequested { get; set; }
+
+    private string Initial => string.IsNullOrWhiteSpace(Name) ? "?" : Name[..1].ToUpperInvariant();
+    private Task RequestDeleteAsync() => OnDeleteRequested.InvokeAsync(Id);
+}
