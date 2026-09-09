@@ -12,7 +12,9 @@
 
     <main>
         <header class="relative isolate overflow-hidden border-b border-border/70">
-            <div class="absolute inset-0 -z-10 opacity-70 bg-[radial-gradient(circle_at_20%_15%,#D4B36A30,transparent_30%),radial-gradient(circle_at_82%_78%,#74533D18,transparent_32%)]"></div>
+            <div
+                class="absolute inset-0 -z-10 opacity-70 bg-[radial-gradient(circle_at_20%_15%,#D4B36A30,transparent_30%),radial-gradient(circle_at_82%_78%,#74533D18,transparent_32%)]">
+            </div>
 
             <div class="mx-auto max-w-5xl px-5 py-16 text-center sm:py-20 lg:px-8 lg:py-24">
                 <nav class="mb-8 flex flex-wrap items-center justify-center gap-2 text-sm text-muted-text"
@@ -29,7 +31,8 @@
                     @Post.CategoryName
                 </a>
 
-                <h1 class="mx-auto mt-7 max-w-4xl font-serif text-4xl leading-[1.12] font-semibold tracking-tight text-primary-brown sm:text-5xl lg:text-6xl">
+                <h1
+                    class="mx-auto mt-7 max-w-4xl font-serif text-4xl leading-[1.12] font-semibold tracking-tight text-primary-brown sm:text-5xl lg:text-6xl">
                     @Post.Title
                 </h1>
 
@@ -50,7 +53,8 @@
             </div>
         </header>
 
-        <article class="mx-auto grid max-w-7xl gap-10 px-5 py-14 lg:grid-cols-[12rem_minmax(0,46rem)_12rem] lg:px-8 lg:py-20">
+        <article
+            class="mx-auto grid max-w-7xl gap-10 px-5 py-14 lg:grid-cols-[12rem_minmax(0,46rem)_12rem] lg:px-8 lg:py-20">
             <aside class="order-2 lg:order-1">
                 <div class="lg:sticky lg:top-8">
                     <p class="text-xs font-bold uppercase tracking-[0.18em] text-muted-text">Compartilhe</p>
@@ -60,7 +64,7 @@
                             ↗
                         </button>
                         <button type="button" aria-label="Curtir reflexão"
-                                class="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface px-4 text-sm font-semibold text-secondary-brown transition hover:border-primary-golden hover:text-primary-golden">
+                                class="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-surface px-4 text-sm font-semibold text-secondary-brown transition hover:border-primary-golden hover:text-primary-golden cursor-pointer">
                             <span aria-hidden="true">♡</span>
                             0
                         </button>
@@ -70,7 +74,7 @@
 
             <div class="order-1 min-w-0 lg:order-2">
                 <div id="inicio"
-                     class="whitespace-pre-line font-serif text-lg leading-9 text-main-text sm:text-xl sm:leading-10">
+                     class="scroll-mt-8 whitespace-pre-line font-serif text-lg leading-9 text-main-text sm:text-xl sm:leading-10">
                     @Post.Body
                 </div>
 
@@ -87,7 +91,8 @@
                 @if (!string.IsNullOrWhiteSpace(Post.Summary))
                 {
                     <section class="mt-14 rounded-3xl border border-primary-golden/25 bg-background-alternative p-7 sm:p-9">
-                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Para guardar no coração</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Para guardar no coração
+                        </p>
                         <p class="mt-4 font-serif text-2xl leading-relaxed text-primary-brown">@Post.Summary</p>
                     </section>
                 }
@@ -97,8 +102,14 @@
                 <div class="rounded-3xl border border-border bg-surface p-5 lg:sticky lg:top-8">
                     <p class="text-xs font-bold uppercase tracking-[0.18em] text-muted-text">Nesta reflexão</p>
                     <nav class="mt-4 grid gap-3 text-sm leading-6">
-                        <a href="#inicio" class="font-semibold text-primary-golden">Início da reflexão</a>
-                        <a href="#comentarios" class="text-muted-text transition hover:text-primary-golden">Comentários</a>
+                        <button type="button" @onclick="ScrollToStartAsync"
+                                class="cursor-pointer text-left font-semibold text-primary-golden">
+                            Início da reflexão
+                        </button>
+                        <button type="button" @onclick="ScrollToCommentsAsync"
+                                class="cursor-pointer text-left text-muted-text transition hover:text-primary-golden">
+                            Comentários
+                        </button>
                     </nav>
                 </div>
             </aside>
@@ -106,7 +117,8 @@
 
         <section class="border-y border-border bg-primary-brown text-surface">
             <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 px-5 py-12 text-center sm:py-14">
-                <span class="grid size-12 place-items-center rounded-full bg-surface/10 text-2xl" aria-hidden="true">♡</span>
+                <span class="grid size-12 place-items-center rounded-full bg-surface/10 text-2xl"
+                      aria-hidden="true">♡</span>
                 <div>
                     <h2 class="font-serif text-2xl font-semibold sm:text-3xl">Esta reflexão falou com você?</h2>
                     <p class="mt-3 leading-7 text-background-alternative/75">
@@ -114,13 +126,13 @@
                     </p>
                 </div>
                 <button type="button"
-                        class="rounded-full bg-secondary-golden px-7 py-3 font-semibold text-primary-brown transition hover:-translate-y-0.5 hover:bg-surface">
+                        class="rounded-full bg-secondary-golden px-7 py-3 font-semibold text-primary-brown transition hover:-translate-y-0.5 hover:bg-surface cursor-pointer">
                     Curtir reflexão · 0
                 </button>
             </div>
         </section>
 
-        <section id="comentarios" class="mx-auto max-w-4xl px-5 py-16 lg:px-8 lg:py-20">
+        <section id="comentarios" class="mx-auto max-w-4xl scroll-mt-8 px-5 py-16 lg:px-8 lg:py-20">
             <div class="flex items-end justify-between gap-5 border-b border-border pb-7">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Comunidade</p>
@@ -134,89 +146,98 @@
                 <DataAnnotationsValidator />
 
                 <h3 class="font-serif text-xl font-semibold text-primary-brown">Compartilhe sua reflexão</h3>
-                <p class="mt-2 text-sm leading-6 text-muted-text">Seu comentário será revisado antes de aparecer publicamente.</p>
+                <p class="mt-2 text-sm leading-6 text-muted-text">Seu comentário será revisado antes de aparecer
+                    publicamente.</p>
 
-                <ValidationSummary
+                    <ValidationSummary
                     class="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 empty:hidden" />
 
-                <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                    <label class="text-sm font-semibold text-primary-brown">
-                        Nome
-                        <InputText @bind-Value="CommentForm.AuthorName" placeholder="Como podemos chamar você?"
-                                   class="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 font-normal text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
-                        <ValidationMessage For="() => CommentForm.AuthorName" class="mt-2 block text-xs font-normal text-red-700" />
-                    </label>
-                    <label class="text-sm font-semibold text-primary-brown">
-                        E-mail <span class="font-normal text-muted-text">(não será publicado)</span>
-                        <InputText @bind-Value="CommentForm.AuthorEmail" type="email" placeholder="voce@exemplo.com"
-                                   class="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 font-normal text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
-                        <ValidationMessage For="() => CommentForm.AuthorEmail" class="mt-2 block text-xs font-normal text-red-700" />
-                    </label>
-                </div>
-                <label class="mt-4 block text-sm font-semibold text-primary-brown">
-                    Comentário
-                    <InputTextArea @bind-Value="CommentForm.Content" rows="5"
-                                   placeholder="Escreva sua mensagem com respeito e carinho..."
-                                   class="mt-2 w-full resize-y rounded-2xl border border-border bg-background px-4 py-3 font-normal leading-7 text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
-                    <ValidationMessage For="() => CommentForm.Content" class="mt-2 block text-xs font-normal text-red-700" />
-                </label>
-                <button type="submit" disabled="@IsSubmittingComment"
-                        class="mt-5 rounded-full bg-primary-brown px-6 py-3 font-semibold text-surface transition hover:bg-secondary-brown disabled:cursor-not-allowed disabled:opacity-60">
-                    @(IsSubmittingComment ? "Enviando..." : "Enviar comentário")
-                </button>
-            </EditForm>
-
-            @if (Comments.Count == 0)
-            {
-                <div class="mt-10 rounded-3xl border border-dashed border-border p-8 text-center text-muted-text">
-                    Nenhum comentário publicado ainda.
-                </div>
-            }
-            else
-            {
-                <div class="mt-10 space-y-6">
-                    @foreach (var comment in Comments)
-                    {
-                        <article class="border-b border-border pb-6">
-                            <div class="flex items-center justify-between gap-4">
-                                <strong class="font-serif text-lg text-primary-brown">@comment.AuthorName</strong>
-                                <time datetime="@comment.CreatedAt.ToString("yyyy-MM-dd")"
-                                      class="text-xs text-muted-text">@FormatCommentDate(comment.CreatedAt)</time>
-                            </div>
-                            <p class="mt-3 whitespace-pre-line leading-7 text-muted-text">@comment.Content</p>
-                        </article>
-                    }
-                </div>
-            }
-        </section>
-
-        <section class="border-t border-border bg-background-alternative">
-            <div class="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-                <div class="flex items-end justify-between gap-5">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Continue a leitura</p>
-                        <h2 class="mt-3 font-serif text-3xl font-semibold text-primary-brown">Reflexões relacionadas</h2>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                        <label class="text-sm font-semibold text-primary-brown">
+                            Nome
+                            <InputText @bind-Value="CommentForm.AuthorName" placeholder="Como podemos chamar você?"
+                                       class="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 font-normal text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                            <ValidationMessage For="() => CommentForm.AuthorName"
+                                               class="mt-2 block text-xs font-normal text-red-700" />
+                        </label>
+                        <label class="text-sm font-semibold text-primary-brown">
+                            E-mail <span class="font-normal text-muted-text">(não será publicado)</span>
+                            <InputText @bind-Value="CommentForm.AuthorEmail" type="email" placeholder="voce@exemplo.com"
+                                       class="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 font-normal text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                            <ValidationMessage For="() => CommentForm.AuthorEmail"
+                                               class="mt-2 block text-xs font-normal text-red-700" />
+                        </label>
                     </div>
-                    <a href="/reflexoes" class="hidden text-sm font-semibold text-secondary-brown hover:text-primary-golden sm:block">
-                        Ver todas →
-                    </a>
-                </div>
+                    <label class="mt-4 block text-sm font-semibold text-primary-brown">
+                        Comentário
+                        <InputTextArea @bind-Value="CommentForm.Content" rows="5"
+                                       placeholder="Escreva sua mensagem com respeito e carinho..."
+                                       class="mt-2 w-full resize-y rounded-2xl border border-border bg-background px-4 py-3 font-normal leading-7 text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15" />
+                        <ValidationMessage For="() => CommentForm.Content"
+                                           class="mt-2 block text-xs font-normal text-red-700" />
+                    </label>
+                    <button type="submit" disabled="@IsSubmittingComment"
+                            class="mt-5 rounded-full bg-primary-brown px-6 py-3 font-semibold text-surface transition hover:bg-secondary-brown disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer">
+                        @(IsSubmittingComment ? "Enviando..." : "Enviar comentário")
+                    </button>
+                </EditForm>
 
-                <div class="mt-9 grid gap-6 md:grid-cols-3">
-                    @foreach (var relatedPost in RelatedPosts)
-                    {
-                        <article class="rounded-3xl border border-border bg-surface p-6 transition hover:-translate-y-1 hover:shadow-lg">
-                            <span class="text-xs font-bold uppercase tracking-[0.15em] text-primary-golden">@relatedPost.CategoryName</span>
-                            <h3 class="mt-4 font-serif text-2xl leading-snug font-semibold text-primary-brown">
-                                <a href="@($"/reflexoes/{relatedPost.Slug}")">@relatedPost.Title</a>
-                            </h3>
-                            <p class="mt-4 text-sm leading-6 text-muted-text">Continue refletindo sobre este tema.</p>
-                        </article>
-                    }
-                </div>
-            </div>
-        </section>
-    </main>
+                @if (Comments.Count == 0)
+                {
+                    <div class="mt-10 rounded-3xl border border-dashed border-border p-8 text-center text-muted-text">
+                        Nenhum comentário publicado ainda.
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-10 space-y-6">
+                        @foreach (var comment in Comments)
+                        {
+                            <article class="border-b border-border pb-6">
+                                <div class="flex items-center justify-between gap-4">
+                                    <strong class="font-serif text-lg text-primary-brown">@comment.AuthorName</strong>
+                                    <time datetime="@comment.CreatedAt.ToString("yyyy-MM-dd")"
+                                          class="text-xs text-muted-text">@FormatCommentDate(comment.CreatedAt)</time>
+                                </div>
+                                <p class="mt-3 whitespace-pre-line leading-7 text-muted-text">@comment.Content</p>
+                            </article>
+                        }
+                    </div>
+                }
+            </section>
 
-    <Footer />
-</div>
+            <section class="border-t border-border bg-background-alternative">
+                <div class="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+                    <div class="flex items-end justify-between gap-5">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary-golden">Continue a leitura
+                            </p>
+                            <h2 class="mt-3 font-serif text-3xl font-semibold text-primary-brown">Reflexões relacionadas
+                            </h2>
+                        </div>
+                        <a href="/reflexoes"
+                           class="hidden text-sm font-semibold text-secondary-brown hover:text-primary-golden sm:block">
+                            Ver todas →
+                        </a>
+                    </div>
+
+                    <div class="mt-9 grid gap-6 md:grid-cols-3">
+                        @foreach (var relatedPost in RelatedPosts)
+                        {
+                            <article
+                                class="rounded-3xl border border-border bg-surface p-6 transition hover:-translate-y-1 hover:shadow-lg">
+                                <span
+                                class="text-xs font-bold uppercase tracking-[0.15em] text-primary-golden">@relatedPost.CategoryName</span>
+                                <h3 class="mt-4 font-serif text-2xl leading-snug font-semibold text-primary-brown">
+                                    <a href="@($"/reflexoes/{relatedPost.Slug}")">@relatedPost.Title</a>
+                                </h3>
+                                <p class="mt-4 text-sm leading-6 text-muted-text">Continue refletindo sobre este tema.</p>
+                            </article>
+                        }
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <Footer />
+    </div>

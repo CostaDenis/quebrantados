@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Quebrantados.Web.DTOs.Comments;
 using Quebrantados.Web.DTOs.Posts;
 using Quebrantados.Web.Enums;
@@ -18,6 +19,7 @@ public partial class PostPageBase : ComponentBase
     [Inject] public ITagService TagService { get; set; } = null!;
     [Inject] public ICommentService CommentService { get; set; } = null!;
     [Inject] public NavigationManager NavigationManager { get; set; } = null!;
+    [Inject] public IJSRuntime JavaScript { get; set; } = null!;
     [Inject] public ILogger<PostPageBase> Logger { get; set; } = null!;
 
     [Parameter]
@@ -117,6 +119,15 @@ public partial class PostPageBase : ComponentBase
 
     protected static string FormatCommentDate(DateTime date)
         => date.ToString("dd MMM yyyy", BrazilianCulture);
+
+    protected Task ScrollToAsync(string elementId)
+        => JavaScript.InvokeVoidAsync("quebrantados.scrollToElement", elementId).AsTask();
+
+    protected Task ScrollToStartAsync()
+        => ScrollToAsync("inicio");
+
+    protected Task ScrollToCommentsAsync()
+        => ScrollToAsync("comentarios");
 
     private void ResetNotification()
     {

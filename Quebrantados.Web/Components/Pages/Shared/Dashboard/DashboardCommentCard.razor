@@ -1,0 +1,93 @@
+@using Quebrantados.Web.DTOs.Comments
+@using Quebrantados.Web.Enums
+
+<article class="rounded-3xl border border-border bg-background p-5 transition hover:border-primary-golden/40 sm:p-6">
+    <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-3">
+                <span
+                class="grid size-10 shrink-0 place-items-center rounded-full bg-background-alternative font-serif font-bold text-primary-golden"
+                aria-hidden="true">@AuthorInitial</span>
+                <div>
+                    <strong class="block font-semibold text-primary-brown">@Comment.AuthorName</strong>
+                    @if (!string.IsNullOrWhiteSpace(Comment.AuthorEmail))
+                    {
+                        <a href="mailto:@Comment.AuthorEmail"
+                           class="text-xs text-muted-text transition hover:text-primary-golden">
+                            @Comment.AuthorEmail
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="block text-xs text-muted-text">E-mail não informado</span>
+                    }
+                </div>
+                <span class="@StatusClasses">@StatusText</span>
+            </div>
+
+            <p class="mt-5 whitespace-pre-line leading-7 text-main-text">@Comment.Content</p>
+
+            <div class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-text">
+                <time datetime="@Comment.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")">@CreatedAtText</time>
+                <span aria-hidden="true">·</span>
+                <a href="@($"/dashboard/reflexoes/{Comment.PostId}/editar")"
+                   class="font-semibold text-secondary-brown transition hover:text-primary-golden">
+                    Abrir reflexão
+                </a>
+            </div>
+        </div>
+
+        <div class="flex shrink-0 flex-wrap gap-2 lg:max-w-52 lg:justify-end">
+            @if (Comment.Status != ECommentStatus.Approved)
+            {
+                <button type="button" disabled="@IsProcessing" @onclick="ApproveAsync"
+                        class="rounded-xl bg-green-50 px-3 py-2 text-xs font-semibold text-green-700 transition hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer">
+                    Aprovar
+                </button>
+            }
+            @if (Comment.Status != ECommentStatus.Rejected)
+            {
+                <button type="button" disabled="@IsProcessing" @onclick="RejectAsync"
+                        class="rounded-xl bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer">
+                    Rejeitar
+                </button>
+            }
+            <button type="button" disabled="@IsProcessing" @onclick="DeleteAsync"
+                    class="rounded-xl border border-red-200 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer">
+                Excluir
+            </button>
+        </div>
+    </div>
+</article>
+
+@code {
+    [Parameter, EditorRequired] public CommentAdminOutput Comment { get; set; } = null!;
+    [Parameter] public bool IsProcessing { get; set; }
+    [Parameter] public EventCallback<Guid> OnApprove { get; set; }
+    [Parameter] public EventCallback<Guid> OnReject { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
+
+    private string AuthorInitial => string.IsNullOrWhiteSpace(Comment.AuthorName)
+        ? "?"
+        : Comment.AuthorName[..1].ToUpperInvariant();
+
+    private string CreatedAtText => Comment.CreatedAt.ToString("dd/MM/yyyy 'às' HH:mm");
+
+    private string StatusText => Comment.Status switch
+    {
+        ECommentStatus.Approved => "Aprovado",
+        ECommentStatus.Rejected => "Rejeitado",
+        _ => "Pendente"
+    };
+
+    private string StatusClasses => Comment.Status switch
+    {
+        ECommentStatus.Approved => "ml-auto rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700",
+        ECommentStatus.Rejected => "ml-auto rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700",
+        _ => "ml-auto rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700"
+    };
+
+    private Task ApproveAsync() => OnApprove.InvokeAsync(Comment.Id);
+    private Task RejectAsync() => OnReject.InvokeAsync(Comment.Id);
+    private Task DeleteAsync() => OnDelete.InvokeAsync(Comment.Id);
+}

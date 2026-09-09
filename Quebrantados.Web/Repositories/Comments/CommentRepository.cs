@@ -27,7 +27,10 @@ public class CommentRepository(AppDbContext context)
         => await context.Comments.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public async Task<List<Comment>> GetAllAsync(CancellationToken cancellationToken)
-        => await context.Comments.ToListAsync(cancellationToken);
+        => await context.Comments
+            .AsNoTracking()
+            .OrderByDescending(comment => comment.CreatedAt)
+            .ToListAsync(cancellationToken);
 
     public async Task CreateAsync(Comment comment, CancellationToken cancellationToken)
     {

@@ -1,0 +1,115 @@
+@page "/dashboard/comentarios"
+@layout MainLayout
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inherits CommentsPage
+@rendermode InteractiveServer
+@using Quebrantados.Web.Enums
+
+<PageTitle>Comentários — Quebrantados</PageTitle>
+
+<div class="mx-auto max-w-360">
+    <DashboardNotification Message="@NotificationMessage" IsError="@NotificationIsError" />
+
+    <HeaderDashboard PageName="Moderação da comunidade" PageTitle="Comentários"
+                     PageDescription="Leia e modere as mensagens enviadas pelos leitores das reflexões." />
+
+    <section class="grid gap-4 py-8 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo dos comentários">
+        <DashboardMetricCard Label="Total" Value="@TotalCount" Symbol="✦"
+                             Note="Todos os comentários recebidos" />
+        <DashboardMetricCard Label="Pendentes" Value="@PendingCount" Symbol="…"
+                             Note="Aguardando sua análise" />
+        <DashboardMetricCard Label="Aprovados" Value="@ApprovedCount" Symbol="✓"
+                             Note="Visíveis para os leitores" />
+        <DashboardMetricCard Label="Rejeitados" Value="@RejectedCount" Symbol="×"
+                             Note="Ocultos da área pública" />
+    </section>
+
+    <section class="overflow-hidden rounded-3xl border border-border bg-surface">
+        <header class="flex flex-col gap-5 border-b border-border p-5 lg:flex-row lg:items-end lg:justify-between lg:px-6">
+            <div>
+                <h2 class="font-serif text-2xl font-semibold text-primary-brown">Moderação</h2>
+                <p class="mt-1 text-sm text-muted-text">Aprove somente mensagens adequadas para a comunidade.</p>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+                <label class="relative block">
+                    <span class="sr-only">Buscar comentário</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                         class="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-text" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6" />
+                        <path d="m16 16 4 4" />
+                    </svg>
+                    <input type="search" @bind="SearchTerm" @bind:event="oninput"
+                           placeholder="Buscar por autor ou conteúdo..."
+                           class="w-full rounded-2xl border border-border bg-background py-2.5 pr-4 pl-10 text-sm text-main-text outline-none transition placeholder:text-muted-text/60 focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15 sm:w-72" />
+                </label>
+
+                <label>
+                    <span class="sr-only">Filtrar por situação</span>
+                    <select @bind="StatusFilter"
+                            class="w-full rounded-2xl border border-border bg-background px-4 py-2.5 text-sm text-main-text outline-none transition focus:border-primary-golden focus:ring-3 focus:ring-primary-golden/15 sm:w-40">
+                        <option value="">Todos</option>
+                        <option value="@ECommentStatus.Pending">Pendentes</option>
+                        <option value="@ECommentStatus.Approved">Aprovados</option>
+                        <option value="@ECommentStatus.Rejected">Rejeitados</option>
+                    </select>
+                </label>
+            </div>
+        </header>
+
+        <div class="grid gap-4 p-5 lg:p-6">
+            @if (CommentItems is null)
+            {
+                @foreach (var _ in Enumerable.Range(0, 3))
+                {
+                    <div class="animate-pulse rounded-3xl border border-border p-6" aria-hidden="true">
+                        <div class="h-4 w-36 rounded bg-background-alternative"></div>
+                        <div class="mt-5 h-3 w-full rounded bg-background-alternative"></div>
+                        <div class="mt-2 h-3 w-2/3 rounded bg-background-alternative"></div>
+                    </div>
+                }
+            }
+            else if (!FilteredComments.Any())
+            {
+                <div class="rounded-3xl border border-dashed border-border px-6 py-14 text-center">
+                    <span class="mx-auto grid size-12 place-items-center rounded-full bg-background-alternative text-xl text-primary-golden"
+                          aria-hidden="true">✦</span>
+                    <h3 class="mt-5 font-serif text-xl font-semibold text-primary-brown">Nenhum comentário encontrado</h3>
+                    <p class="mt-2 text-sm text-muted-text">Altere o filtro ou aguarde novas mensagens dos leitores.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var comment in FilteredComments)
+                {
+                    <DashboardCommentCard Comment="@comment"
+                                          IsProcessing="@(_processingCommentId == comment.Id)"
+                                          OnApprove="@ApproveAsync"
+                                          OnReject="@RejectAsync"
+                                          OnDelete="@RequestDelete" />
+                }
+            }
+        </div>
+
+        <footer class="border-t border-border px-5 py-4 text-sm text-muted-text sm:px-6">
+            Exibindo @FilteredComments.Count de @TotalCount comentários
+        </footer>
+    </section>
+
+    <aside class="mt-6 flex gap-4 rounded-3xl border border-primary-golden/25 bg-background-alternative p-5 sm:items-center">
+        <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-golden/15 text-primary-golden"
+              aria-hidden="true">!</span>
+        <p class="text-sm leading-6 text-muted-text">
+            <strong class="text-primary-brown">Privacidade:</strong>
+            o e-mail é exibido somente nesta área administrativa e nunca aparece para os leitores.
+        </p>
+    </aside>
+</div>
+
+<DashboardDeleteConfirmation IsOpen="@(_commentPendingDeletion is not null)"
+                             IsProcessing="@IsDeleting"
+                             Title="Excluir comentário"
+                             Message="@DeleteConfirmationMessage"
+                             ConfirmText="Excluir comentário"
+                             OnConfirm="@ConfirmDeleteAsync"
+                             OnCancel="@CancelDelete" />
