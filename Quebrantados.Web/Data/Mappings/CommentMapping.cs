@@ -39,10 +39,10 @@ public class CommentMapping : IEntityTypeConfiguration<Comment>
         builder.Property(x => x.AuthorEmail)
             .HasColumnName("AuthorEmail")
             .HasConversion(
-                email => email.Value,
+                email => email!.Value,
                 value => new EmailAddress(value))
             .HasMaxLength(255)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(x => x.Content)
             .HasColumnName("Content")

@@ -15,6 +15,16 @@ public class PostRepository(AppDbContext context) : IPostRepository
             .Include(x => x.Tags)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
+    public async Task<Post?> GetBySlugAsync(string slug, CancellationToken cancellationToken)
+    {
+        Slug normalizedSlug = new(slug);
+        return await context.Posts
+            .Include(x => x.Category)
+            .Include(x => x.Tags)
+            .FirstOrDefaultAsync(x => x.Slug == normalizedSlug, cancellationToken);
+    }
+
+
     public async Task<List<Post>> GetAllAsync(CancellationToken cancellationToken)
         => await context.Posts
             .Include(post => post.Category)
@@ -69,4 +79,11 @@ public class PostRepository(AppDbContext context) : IPostRepository
         .Select(post => new PostListItem(post.Id, post.Title.Value, post.Slug.Value,
             post.Category.Name.Value, post.Status, post.LastUpdateDate))
         .ToListAsync(cancellationToken);
+
+    public async Task<bool> ExistsPublishedAsync(Guid id, CancellationToken cancellationToken)
+        => await context.Posts
+            .AnyAsync(post =>
+                post.Id == id
+                && post.Status == EPostStatus.Published
+            , cancellationToken);
 }

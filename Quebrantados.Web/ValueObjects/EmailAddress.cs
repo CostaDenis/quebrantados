@@ -7,8 +7,10 @@ public class EmailAddress : ValueObject
 
     public EmailAddress(string value)
     {
-        var normalized = value?.Trim().ToLowerInvariant()
-            ?? string.Empty;
+        var normalized = (value ?? string.Empty)
+            .Trim()
+            .ToLowerInvariant();
+
         InvalidEmailAddressException.ThrowIfInvalid(normalized);
 
         Value = normalized;

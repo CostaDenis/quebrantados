@@ -1,5 +1,6 @@
 using Quebrantados.Web.DTOs.Posts;
 using Quebrantados.Web.Entities;
+using Quebrantados.Web.Enums;
 using Quebrantados.Web.Exceptions.Services;
 using Quebrantados.Web.Repositories.Categories;
 using Quebrantados.Web.Repositories.Posts;
@@ -9,12 +10,26 @@ using Quebrantados.Web.ValueObjects;
 namespace Quebrantados.Web.Services.Posts;
 
 public class PostService(IPostRepository postRepository,
-    ICategoryRepository categoryRepository, ITagRepository tagRepository) : IPostService
+    ICategoryRepository categoryRepository,
+    ITagRepository tagRepository) : IPostService
 {
 
     public async Task<PostOutput?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var post = await postRepository.GetByIdAsync(id, cancellationToken);
+
+        if (post is null)
+            return null;
+
+        return new PostOutput(post.Id, post.Title, post.Slug,
+            post.Summary?.Value, post.Body, post.CreatedAt,
+            post.LastUpdateDate, post.Category.Id, post.Category.Name.Value,
+            post.Status, post.PublishedAt, post.Tags.Select(tag => tag.Id).ToList());
+    }
+
+    public async Task<PostOutput?> GetBySlugAsync(string slug, CancellationToken cancellationToken)
+    {
+        var post = await postRepository.GetBySlugAsync(slug, cancellationToken);
 
         if (post is null)
             return null;

@@ -10,11 +10,10 @@ public class Comment : Entity
     { }
 
     public Comment(Guid postId, CommentAuthorName authorName,
-        EmailAddress authorEmail, CommentContent content)
+        EmailAddress? authorEmail, CommentContent content)
     {
         PostWasNotInformedException.ThrowIfInvalid(postId);
         ArgumentNullException.ThrowIfNull(authorName);
-        ArgumentNullException.ThrowIfNull(authorEmail);
         ArgumentNullException.ThrowIfNull(content);
 
         PostId = postId;
@@ -28,7 +27,7 @@ public class Comment : Entity
     public Guid PostId { get; private set; }
     public Post Post { get; private set; } = null!;
     public CommentAuthorName AuthorName { get; private set; } = null!;
-    public EmailAddress AuthorEmail { get; private set; } = null!;
+    public EmailAddress? AuthorEmail { get; private set; }
     public CommentContent Content { get; private set; } = null!;
 
     public ECommentStatus Status { get; private set; }
